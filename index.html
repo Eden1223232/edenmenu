@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EdenFood | Меню роллов и сетов</title>
+    <meta
+      name="description"
+      content="EdenFood Dubasari: премиум роллы, сеты, горячие позиции, десерты и напитки. Меню с фото, составом и быстрым заказом в Telegram."
+    />
+    <link rel="preconnect" href="https://ucrabs.by" />
+    <link rel="preconnect" href="https://scontent.cdninstagram.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="EdenFood">
+        <span>Eden</span><strong>Food</strong>
+      </a>
+      <nav aria-label="Разделы меню">
+        <a href="#rolls">Роллы</a>
+        <a href="#sets">Сеты</a>
+        <a href="#hot">Горячее</a>
+        <a href="#desserts">Десерты</a>
+        <a href="#drinks">Напитки</a>
+      </nav>
+      <a class="header-action" href="https://t.me/edenfood" target="_blank" rel="noreferrer">Заказать</a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Доставка и самовывоз, г. Дубоссары</p>
+          <h1><span>Eden</span><strong>Food</strong></h1>
+          <p>
+            Премиум суши и роллы: одиночные позиции, большие сеты, hot-роллы,
+            десерты и напитки. Выберите блюдо и оформите заказ в Telegram.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#menu">Смотреть меню</a>
+            <a class="secondary-action" href="https://t.me/edenfood" target="_blank" rel="noreferrer">Telegram</a>
+          </div>
+        </div>
+        <div class="hero-media" aria-hidden="true">
+          <img src="https://ucrabs.by/image/cache/catalog/products/6618774_img_8926-1200x1200h.jpg" alt="" />
+        </div>
+      </section>
+
+      <section class="status-strip" aria-label="Информация">
+        <div>
+          <span>Формат</span>
+          <strong>Меню-визитка</strong>
+        </div>
+        <div>
+          <span>Заказы</span>
+          <strong>через Telegram</strong>
+        </div>
+        <div>
+          <span>Разделы</span>
+          <strong>роллы, сеты, hot, десерты</strong>
+        </div>
+      </section>
+
+      <section class="menu-shell" id="menu">
+        <div class="section-heading">
+          <p class="eyebrow">Меню</p>
+          <h2>Все позиции в одном месте</h2>
+        </div>
+        <div class="filters" id="filters" aria-label="Фильтр категорий"></div>
+        <div class="menu-grid" id="menuGrid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="brand footer-brand"><span>Eden</span><strong>Food</strong></div>
+      <p>PREMIUM SUSHI & ROLL. Доставка и самовывоз в г. Дубоссары.</p>
+      <a href="https://www.instagram.com/edenfood.dubasari/" target="_blank" rel="noreferrer">Instagram</a>
+      <a href="https://t.me/edenfood" target="_blank" rel="noreferrer">Telegram</a>
+    </footer>
+
+    <script src="menu-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
