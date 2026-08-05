@@ -121,6 +121,18 @@ nav a {
   max-width: 760px;
 }
 
+.hero-logo {
+  display: block;
+  width: min(220px, 48vw);
+  aspect-ratio: 1;
+  object-fit: contain;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #050505;
+  box-shadow: var(--shadow);
+}
+
 .eyebrow {
   margin: 0 0 12px;
   color: var(--gold);
@@ -235,9 +247,18 @@ footer p {
 .item-image {
   width: 100%;
   aspect-ratio: 1;
-  background: #f7f2eb;
+  background: #d8d8d8;
   object-fit: contain;
   padding: 12px;
+}
+
+.item-image-placeholder {
+  display: grid;
+  place-items: center;
+  color: #1b1b1b;
+  font-weight: 900;
+  text-align: center;
+  padding: 20px;
 }
 
 .item-body {
