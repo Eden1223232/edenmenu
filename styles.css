@@ -247,7 +247,7 @@ footer p {
 .item-image {
   width: 100%;
   aspect-ratio: 1;
-  background: #d8d8d8;
+  background: #343434;
   object-fit: contain;
   padding: 12px;
 }
