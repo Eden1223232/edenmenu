@@ -453,3 +453,85 @@ footer a {
     gap: 6px;
   }
 }
+
+/* Branded hero: reuse the original EDEN artwork without cropping it. */
+.hero--branded {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 90px);
+}
+
+.hero--branded .hero-copy {
+  min-width: 0;
+}
+
+.hero--branded h1 {
+  font-size: clamp(3.5rem, 6.8vw, 8.25rem);
+  overflow-wrap: anywhere;
+}
+
+.hero-banner {
+  width: 100%;
+  max-width: 620px;
+  min-width: 0;
+  margin: 0;
+  justify-self: end;
+  overflow: hidden;
+  border: 1px solid rgba(215, 181, 109, 0.3);
+  border-radius: 16px;
+  background: #090909;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45), 0 0 50px rgba(226, 15, 24, 0.1);
+}
+
+.hero-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.hero-banner figcaption {
+  padding: 20px;
+  border-top: 1px solid var(--line);
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (max-width: 940px) {
+  .hero--branded {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .hero--branded h1 {
+    font-size: clamp(3.5rem, 10vw, 6rem);
+  }
+
+  .hero-banner {
+    display: flex;
+    align-items: center;
+    max-width: none;
+  }
+
+  .hero-banner img {
+    width: clamp(120px, 30vw, 220px);
+    flex: 0 0 auto;
+  }
+
+  .hero-banner figcaption {
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+    border-top: 0;
+    border-left: 1px solid var(--line);
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+  }
+}
