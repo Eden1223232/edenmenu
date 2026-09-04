@@ -2,7 +2,14 @@ const menuGrid = document.querySelector("#menuGrid");
 const filters = document.querySelector("#filters");
 const menuSearch = document.querySelector("#menuSearch");
 const orderUrl = "https://t.me/edenfood";
-let activeCategoryId = "all";
+const defaultCategoryId = "seti";
+const menuCategories = [
+  ...window.EDEN_MENU.filter((category) => category.id === defaultCategoryId),
+  ...window.EDEN_MENU.filter((category) => category.id !== defaultCategoryId),
+];
+let activeCategoryId = menuCategories.some((category) => category.id === defaultCategoryId)
+  ? defaultCategoryId
+  : "all";
 let searchQuery = "";
 
 function makeButton(category, active) {
@@ -11,6 +18,7 @@ function makeButton(category, active) {
   button.textContent = category.label;
   button.dataset.category = category.id;
   button.className = active ? "active" : "";
+  button.setAttribute("aria-pressed", String(active));
   return button;
 }
 
@@ -44,8 +52,8 @@ function matchesSearch(item) {
 function renderMenu() {
   menuGrid.innerHTML = "";
   const categories = activeCategoryId === "all"
-    ? window.EDEN_MENU
-    : window.EDEN_MENU.filter((category) => category.id === activeCategoryId);
+    ? menuCategories
+    : menuCategories.filter((category) => category.id === activeCategoryId);
   let renderedCount = 0;
 
   categories.forEach((category) => {
@@ -69,13 +77,21 @@ function renderMenu() {
 
 function renderFilters() {
   const all = { id: "all", label: "Все меню" };
-  filters.append(makeButton(all, true), ...window.EDEN_MENU.map((category) => makeButton(category, false)));
+  const filterCategories = [
+    ...menuCategories.filter((category) => category.id === defaultCategoryId),
+    all,
+    ...menuCategories.filter((category) => category.id !== defaultCategoryId),
+  ];
+  filters.append(...filterCategories.map((category) => makeButton(category, category.id === activeCategoryId)));
 
   filters.addEventListener("click", (event) => {
     const button = event.target.closest("button");
     if (!button) return;
-    filters.querySelectorAll("button").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
+    filters.querySelectorAll("button").forEach((item) => {
+      const active = item === button;
+      item.classList.toggle("active", active);
+      item.setAttribute("aria-pressed", String(active));
+    });
     activeCategoryId = button.dataset.category;
     renderMenu();
   });
