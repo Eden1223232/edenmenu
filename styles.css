@@ -155,10 +155,10 @@ nav a {
 
 .hero-details {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
   gap: 12px;
   margin-top: 24px;
-  max-width: 860px;
+  max-width: 1120px;
 }
 
 .hero-details div {
@@ -656,4 +656,23 @@ nav .giveaway-nav {
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+
+.giveaway-live a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 10px;
+  color: #f8d58e;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.giveaway-steps a,
+.giveaway-order p a {
+  color: #ffe0a0;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
