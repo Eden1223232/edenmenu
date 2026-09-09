@@ -62,6 +62,63 @@
     },
   ];
 
+  const hotItems = [
+    {
+      name: "Суши-бургер с лососем",
+      price: "170 руб",
+      meta: "1 шт.",
+      description: "Горячий суши-бургер с лососем.",
+      image: "assets/hot/sushi-burger-salmon.jpg",
+      imageFit: "cover",
+      source: "",
+    },
+    {
+      name: "Суши-бургер с креветкой",
+      price: "170 руб",
+      meta: "1 шт.",
+      description: "Горячий суши-бургер с креветкой.",
+      image: "assets/hot/sushi-burger-shrimp.jpg",
+      imageFit: "cover",
+      source: "",
+    },
+    {
+      name: "Суши-бургер с чукой",
+      price: "170 руб",
+      meta: "1 шт.",
+      description: "Горячий суши-бургер с чукой.",
+      image: "assets/hot/sushi-burger-chuka.jpg",
+      imageFit: "cover",
+      source: "",
+    },
+    {
+      name: "Суши-хот-дог с лососем",
+      price: "170 руб",
+      meta: "1 шт.",
+      description: "Горячий суши-хот-дог с лососем.",
+      image: "assets/hot/sushi-hotdog-salmon.jpg",
+      imageFit: "cover",
+      source: "",
+    },
+    {
+      name: "Суши-хот-дог с угрём",
+      price: "170 руб",
+      meta: "1 шт.",
+      description: "Горячий суши-хот-дог с угрём.",
+      image: "assets/hot/sushi-hotdog-eel.jpg",
+      imageFit: "cover",
+      source: "",
+    },
+    {
+      name: "Суши-хот-дог с креветкой",
+      price: "170 руб",
+      meta: "1 шт.",
+      description: "Горячий суши-хот-дог с креветкой.",
+      image: "assets/hot/sushi-hotdog-shrimp.jpg",
+      imageFit: "cover",
+      source: "",
+    },
+  ];
+
   if (!existingCategoryIds.has(tubeCategory.id)) {
     window.EDEN_MENU.unshift(tubeCategory);
   }
@@ -69,4 +126,12 @@
   barCategories.forEach((category) => {
     if (!existingCategoryIds.has(category.id)) window.EDEN_MENU.push(category);
   });
+
+  const hotCategory = window.EDEN_MENU.find((category) => category.id === "roll_vtemp");
+  if (hotCategory) {
+    const existingHotItemNames = new Set(hotCategory.items.map((item) => item.name));
+    hotCategory.items.push(...hotItems.filter((item) => !existingHotItemNames.has(item.name)));
+  } else {
+    window.EDEN_MENU.push({ id: "roll_vtemp", label: "Горячие роллы", items: hotItems });
+  }
 })();

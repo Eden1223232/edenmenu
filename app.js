@@ -25,8 +25,9 @@ function makeButton(category, active) {
 function itemCard(item) {
   const article = document.createElement("article");
   article.className = "menu-item";
+  const imageClass = item.imageFit === "cover" ? "item-image item-image--cover" : "item-image";
   const imageMarkup = item.image
-    ? `<img class="item-image" src="${item.image}" alt="${item.name}" loading="lazy">`
+    ? `<img class="${imageClass}" src="${item.image}" alt="${item.name}" loading="lazy">`
     : `<div class="item-image item-image-placeholder" aria-hidden="true"><span>${item.name}</span></div>`;
   article.innerHTML = `
     ${imageMarkup}

@@ -310,6 +310,11 @@ footer p {
   padding: 12px;
 }
 
+.item-image--cover {
+  object-fit: cover;
+  padding: 0;
+}
+
 .item-image-placeholder {
   display: grid;
   place-items: center;
