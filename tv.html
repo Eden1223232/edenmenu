@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090707" />
+    <title>EDEN — меню на экране</title>
+    <meta name="description" content="Автоматическое слайд-шоу меню EDEN для телевизора." />
+    <link rel="stylesheet" href="tv.css?v=tv-menu-20260909" />
+  </head>
+  <body>
+    <div class="tv-ambient tv-ambient--red" aria-hidden="true"></div>
+    <div class="tv-ambient tv-ambient--gold" aria-hidden="true"></div>
+
+    <div class="tv-shell">
+      <header class="tv-header">
+        <a class="tv-brand" href="/" aria-label="Открыть основной сайт EDEN">
+          <img src="assets/logo-eden.png" alt="" width="72" height="72" />
+          <span><strong>EDEN</strong><small>Суши · роллы · сеты</small></span>
+        </a>
+        <div class="tv-header-info">
+          <span>Заказы</span>
+          <strong>+373 68 299 125</strong>
+        </div>
+      </header>
+
+      <main class="tv-stage" id="tvStage" aria-label="Слайд-шоу меню"></main>
+
+      <footer class="tv-footer">
+        <div class="tv-location">
+          <strong>Дубоссары · Горького, 22</strong>
+          <span>Вавилон, 3 этаж</span>
+        </div>
+        <div class="tv-progress" aria-hidden="true"><span id="progressBar"></span></div>
+        <div class="tv-hours">
+          <span>Вт–Вс</span>
+          <strong>11:00–23:00</strong>
+        </div>
+        <div class="tv-counter" id="slideCounter" aria-label="Номер слайда"></div>
+      </footer>
+    </div>
+
+    <div class="tv-controls" id="tvControls" aria-label="Управление слайд-шоу">
+      <button type="button" id="prevSlide" aria-label="Предыдущий слайд">←</button>
+      <button type="button" id="togglePlayback" aria-label="Остановить слайд-шоу">Пауза</button>
+      <button type="button" id="nextSlide" aria-label="Следующий слайд">→</button>
+      <button type="button" id="toggleFullscreen">На весь экран</button>
+    </div>
+
+    <script src="menu-data.js"></script>
+    <script src="extra-menu-data.js?v=hot-menu-20260909"></script>
+    <script src="tv.js?v=tv-menu-20260909"></script>
+  </body>
+</html>
