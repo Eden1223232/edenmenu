@@ -134,4 +134,11 @@
   } else {
     window.EDEN_MENU.push({ id: "roll_vtemp", label: "Горячие роллы", items: hotItems });
   }
+
+  const bigFila = window.EDEN_MENU
+    .flatMap((category) => category.items)
+    .find((item) => item.name === "БИГ ФИЛА");
+  if (bigFila) {
+    bigFila.meta = "Хот-дог, 1 шт.";
+  }
 })();
