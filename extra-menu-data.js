@@ -19,6 +19,32 @@
 
   const barCategories = [
     {
+      id: "cold_drinks",
+      label: "Холодные напитки",
+      layout: "text-list",
+      groups: [
+        { id: "lemonades", label: "Лимонады" },
+        { id: "canned", label: "Напитки в банках" },
+      ],
+      items: [
+        { name: "Лимонад классический", price: "45 руб", group: "lemonades" },
+        { name: "Мохито манго", price: "45 руб", group: "lemonades" },
+        { name: "Мохито вишня", price: "45 руб", group: "lemonades" },
+        { name: "Манго Маракуйя", price: "45 руб", group: "lemonades" },
+        { name: "Манго апельсин", price: "45 руб", group: "lemonades" },
+        { name: "Малина-мята", price: "45 руб", group: "lemonades" },
+        { name: "Бамбл кофе", price: "45 руб", group: "lemonades" },
+        { name: "Мохито", price: "45 руб", group: "lemonades" },
+        { name: "Апельсин", price: "45 руб", group: "lemonades" },
+        { name: "Облепиха-маракуйя", price: "45 руб", group: "lemonades" },
+        { name: "Киви", price: "45 руб", group: "lemonades" },
+        { name: "Coca-Cola", price: "24 руб", meta: "330 мл", group: "canned" },
+        { name: "Fanta", price: "24 руб", meta: "330 мл", group: "canned" },
+        { name: "Sprite", price: "24 руб", meta: "330 мл", group: "canned" },
+        { name: "Non Stop", price: "24 руб", meta: "0,5 л", group: "canned" },
+      ],
+    },
+    {
       id: "coffee",
       label: "Кофейные напитки",
       items: [

@@ -44,6 +44,56 @@ function itemCard(item) {
   return article;
 }
 
+function textMenu(category, items) {
+  const menu = document.createElement("div");
+  menu.className = "text-menu";
+
+  (category.groups || []).forEach((group) => {
+    const groupItems = items.filter((item) => item.group === group.id);
+    if (!groupItems.length) return;
+
+    const section = document.createElement("section");
+    section.className = "text-menu-group";
+
+    const heading = document.createElement("h4");
+    heading.className = "text-menu-group-title";
+    heading.textContent = group.label;
+
+    const list = document.createElement("div");
+    list.className = "text-menu-list";
+
+    groupItems.forEach((item) => {
+      const row = document.createElement("article");
+      row.className = "text-menu-item";
+
+      const name = document.createElement("h5");
+      name.className = "text-menu-name";
+      name.textContent = item.name;
+      if (item.meta) {
+        const meta = document.createElement("small");
+        meta.textContent = item.meta;
+        name.append(meta);
+      }
+
+      const leader = document.createElement("span");
+      leader.className = "text-menu-leader";
+      leader.setAttribute("aria-hidden", "true");
+
+      const price = document.createElement("span");
+      price.className = "price";
+      price.textContent = item.price;
+
+      row.append(name, leader, price);
+      list.append(row);
+    });
+
+    section.append(heading, list);
+    menu.append(section);
+  });
+
+  return menu;
+}
+
 function matchesSearch(item) {
   if (!searchQuery) return true;
   const haystack = `${item.name} ${item.description} ${item.meta} ${item.price}`.toLowerCase();
@@ -64,7 +114,8 @@ function renderMenu() {
     title.className = "category-title";
     title.id = category.id;
     title.innerHTML = `<span>${String(items.length).padStart(2, "0")}</span><h3>${category.label}</h3>`;
-    menuGrid.append(title, ...items.map(itemCard));
+    const content = category.layout === "text-list" ? [textMenu(category, items)] : items.map(itemCard);
+    menuGrid.append(title, ...content);
     renderedCount += items.length;
   });
 
