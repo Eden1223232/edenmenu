@@ -42,6 +42,15 @@
         { name: "Fanta", price: "24 руб", meta: "330 мл", group: "canned" },
         { name: "Sprite", price: "24 руб", meta: "330 мл", group: "canned" },
         { name: "Non Stop", price: "24 руб", meta: "0,5 л", group: "canned" },
+        {
+          name: "Сок мультифрукт",
+          price: "15 руб",
+          meta: "200 мл",
+          description: "Мультифруктовый нектар «Наш Сік».",
+          image: "assets/drinks/multifruit-juice-200ml.png",
+          source: "",
+          display: "card",
+        },
       ],
     },
     {

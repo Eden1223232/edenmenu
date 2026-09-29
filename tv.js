@@ -16,7 +16,7 @@
   ];
 
   const slides = orderedMenu.flatMap((category) => {
-    const hasImages = category.items.some((item) => item.image);
+    const hasImages = category.layout !== "text-list" && category.items.some((item) => item.image);
     const itemsPerSlide = hasImages ? 5 : 6;
     const sectionPageCount = Math.ceil(category.items.length / itemsPerSlide);
     const sectionSlides = [];

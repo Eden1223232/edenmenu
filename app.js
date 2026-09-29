@@ -114,7 +114,18 @@ function renderMenu() {
     title.className = "category-title";
     title.id = category.id;
     title.innerHTML = `<span>${String(items.length).padStart(2, "0")}</span><h3>${category.label}</h3>`;
-    const content = category.layout === "text-list" ? [textMenu(category, items)] : items.map(itemCard);
+    const featuredItems = category.layout === "text-list"
+      ? items.filter((item) => item.display === "card")
+      : [];
+    const listedItems = category.layout === "text-list"
+      ? items.filter((item) => item.display !== "card")
+      : [];
+    const content = category.layout === "text-list"
+      ? [
+          ...featuredItems.map(itemCard),
+          ...(listedItems.length ? [textMenu(category, listedItems)] : []),
+        ]
+      : items.map(itemCard);
     menuGrid.append(title, ...content);
     renderedCount += items.length;
   });
