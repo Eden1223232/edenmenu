@@ -6,10 +6,10 @@
     <title>EdenFood | Меню роллов и сетов</title>
     <meta
       name="description"
-      content="EdenFood Dubasari: премиум роллы, сеты, горячие позиции, десерты и напитки. Меню с фото, составом и быстрым заказом в Telegram."
+      content="EdenFood Дубоссары: роллы, сеты, горячие позиции, десерты и напитки. Соберите корзину и оформите заказ на месте, на самовывоз или доставку."
     />
     <link rel="preconnect" href="https://ucrabs.by" />
-    <link rel="stylesheet" href="styles.css?v=cold-drinks-20260926" />
+    <link rel="stylesheet" href="styles.css?v=web-orders-20261001" />
   </head>
   <body>
     <header class="site-header">
@@ -23,7 +23,9 @@
         <a href="https://t.me/edenfood" target="_blank" rel="noreferrer">Telegram</a>
         <a href="https://www.instagram.com/edenfood_dubassari/" target="_blank" rel="noreferrer">Instagram</a>
       </nav>
-      <a class="header-action" href="https://t.me/edenfood" target="_blank" rel="noreferrer">Заказать</a>
+      <button class="header-action cart-header-button" id="headerCartButton" type="button">
+        Корзина <span class="cart-count" data-cart-count>0</span>
+      </button>
     </header>
 
     <a class="giveaway-announcement" href="#giveaway">
@@ -40,8 +42,8 @@
           <p class="eyebrow">Доставка и самовывоз, г. Дубоссары</p>
           <h1><span>Eden</span><strong>Food</strong></h1>
           <p>
-            Суши, роллы, сеты, горячие позиции, поке, гарниры и десерты. Выберите блюдо,
-            посмотрите состав и оформите заказ в Telegram.
+            Суши, роллы, сеты, горячие позиции, поке, гарниры и десерты. Добавляйте блюда
+            кнопкой «+», переходите между разделами и оформляйте заказ прямо на сайте.
           </p>
           <div class="hero-details" id="contacts">
             <div>
@@ -78,13 +80,25 @@
           <p class="eyebrow">Меню</p>
           <h2>Выберите раздел или найдите блюдо</h2>
         </div>
-        <div class="menu-tools">
-          <label class="search-field">
-            <span>Поиск</span>
-            <input id="menuSearch" type="search" placeholder="Название, состав или цена" autocomplete="off" />
-          </label>
+        <div class="menu-navigation">
+          <div class="menu-tools">
+            <label class="search-field">
+              <span>Поиск по меню</span>
+              <input id="menuSearch" type="search" placeholder="Название, состав или цена" autocomplete="off" />
+            </label>
+          </div>
+          <div class="category-rail-heading">
+            <div>
+              <strong>Выберите раздел</strong>
+              <small>Листайте категории влево и вправо</small>
+            </div>
+            <div class="category-arrows" aria-label="Прокрутка разделов">
+              <button id="categoriesPrevious" type="button" aria-label="Предыдущие разделы">←</button>
+              <button id="categoriesNext" type="button" aria-label="Следующие разделы">→</button>
+            </div>
+          </div>
+          <div class="filters" id="filters" aria-label="Фильтр категорий"></div>
         </div>
-        <div class="filters" id="filters" aria-label="Фильтр категорий"></div>
         <div class="menu-grid" id="menuGrid"></div>
       </section>
 
@@ -178,8 +192,108 @@
       <a href="https://www.instagram.com/edenfood_dubassari/" target="_blank" rel="noreferrer">@edenfood_dubassari</a>
     </footer>
 
+    <button class="floating-cart" id="floatingCartButton" type="button" aria-label="Открыть корзину">
+      <span class="floating-cart-copy">
+        <span class="floating-cart-icon" aria-hidden="true">🛍</span>
+        <span><strong>Корзина</strong><small><span data-cart-count>0</span> поз.</small></span>
+      </span>
+      <b data-cart-total>0 руб</b>
+    </button>
+
+    <dialog class="cart-dialog" id="cartDialog" aria-labelledby="cartTitle">
+      <div class="cart-panel">
+        <header class="cart-panel-header">
+          <div>
+            <p>Ваш заказ</p>
+            <h2 id="cartTitle">Корзина</h2>
+          </div>
+          <button class="dialog-close" id="closeCart" type="button" aria-label="Закрыть корзину">×</button>
+        </header>
+
+        <div class="cart-panel-body">
+          <section class="cart-order-section" aria-label="Выбранные товары">
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-empty" id="cartEmpty">
+              <span aria-hidden="true">＋</span>
+              <strong>Корзина пока пуста</strong>
+              <p>Закройте это окно и нажмите «+» у нужных блюд.</p>
+            </div>
+            <div class="cart-total-row">
+              <span>Сумма заказа</span>
+              <strong id="cartTotal">0 руб</strong>
+            </div>
+          </section>
+
+          <form class="checkout-form" id="checkoutForm">
+            <fieldset class="service-fieldset">
+              <legend>Как получить заказ</legend>
+              <div class="service-options">
+                <label>
+                  <input type="radio" name="serviceType" value="DINE_IN" checked />
+                  <span><b>На месте</b><small>Поесть в EDEN</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="serviceType" value="TAKEAWAY" />
+                  <span><b>Самовывоз</b><small>Забрать самостоятельно</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="serviceType" value="DELIVERY" />
+                  <span><b>Доставка</b><small>Привезём по адресу</small></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="checkout-grid">
+              <label>
+                <span>Ваше имя</span>
+                <input name="customerName" type="text" maxlength="80" autocomplete="name" required placeholder="Как к вам обращаться" />
+              </label>
+              <label>
+                <span>Номер телефона</span>
+                <input name="customerPhone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required placeholder="Например, +373 68 299 125" />
+              </label>
+            </div>
+
+            <div class="delivery-fields" id="deliveryFields" hidden>
+              <p class="delivery-price-note">Доставка по городу стоит ориентировочно 35–40 рублей. Точную стоимость подтвердит официант.</p>
+              <div class="checkout-grid">
+                <label>
+                  <span>Город</span>
+                  <input name="deliveryCity" type="text" maxlength="80" autocomplete="address-level2" data-delivery-required placeholder="Город" />
+                </label>
+                <label>
+                  <span>Улица</span>
+                  <input name="deliveryStreet" type="text" maxlength="120" autocomplete="street-address" data-delivery-required placeholder="Название улицы" />
+                </label>
+                <label>
+                  <span>Дом</span>
+                  <input name="deliveryHouse" type="text" maxlength="40" data-delivery-required placeholder="Номер дома" />
+                </label>
+                <label>
+                  <span>Квартира</span>
+                  <input name="deliveryApartment" type="text" maxlength="40" autocomplete="address-line2" placeholder="Если есть" />
+                </label>
+              </div>
+            </div>
+
+            <label class="checkout-note">
+              <span>Примечание</span>
+              <textarea name="customerNote" maxlength="500" rows="3" placeholder="Пожелания к заказу, как найти вход или другая важная информация"></textarea>
+            </label>
+            <p class="order-status" id="orderStatus" role="status" aria-live="polite"></p>
+            <button class="checkout-submit" id="checkoutSubmit" type="submit">
+              Отправить заказ официанту
+            </button>
+            <small class="checkout-help">После отправки официант проверит заказ и передаст его на кухню.</small>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="order-toast" id="orderToast" role="status" aria-live="polite" hidden></div>
+
     <script src="menu-data.js"></script>
-    <script src="extra-menu-data.js?v=multifruit-juice-20260929"></script>
-    <script src="app.js?v=multifruit-juice-20260929"></script>
+    <script src="extra-menu-data.js?v=web-orders-20261001"></script>
+    <script src="app.js?v=web-orders-20261001"></script>
   </body>
 </html>
