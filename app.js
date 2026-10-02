@@ -390,11 +390,12 @@ async function submitOrder(event) {
   event.preventDefault();
   if (submitting || !cartSummary().count) return;
   const form = new FormData(checkoutForm);
+  const guestCount = String(form.get("guestCount") || "").trim();
   const basePayload = {
     serviceType: String(form.get("serviceType") || ""),
     customerName: String(form.get("customerName") || ""),
     customerPhone: String(form.get("customerPhone") || ""),
-    guestCount: Number(form.get("guestCount")),
+    guestCount: guestCount ? Number(guestCount) : null,
     customerNote: String(form.get("customerNote") || ""),
     deliveryCity: String(form.get("deliveryCity") || ""),
     deliveryStreet: String(form.get("deliveryStreet") || ""),
