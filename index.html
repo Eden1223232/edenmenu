@@ -9,7 +9,7 @@
       content="EdenFood Дубоссары: роллы, сеты, горячие позиции, десерты и напитки. Соберите корзину и оформите заказ на месте, на самовывоз или доставку."
     />
     <link rel="preconnect" href="https://ucrabs.by" />
-    <link rel="stylesheet" href="styles.css?v=web-orders-20261001" />
+    <link rel="stylesheet" href="styles.css?v=stations-20261001" />
   </head>
   <body>
     <header class="site-header">
@@ -252,6 +252,10 @@
                 <span>Номер телефона</span>
                 <input name="customerPhone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required placeholder="Например, +373 68 299 125" />
               </label>
+              <label>
+                <span>Количество персон (палочек)</span>
+                <input name="guestCount" type="number" min="1" max="50" step="1" inputmode="numeric" required placeholder="Сколько комплектов положить" />
+              </label>
             </div>
 
             <div class="delivery-fields" id="deliveryFields" hidden>
@@ -284,7 +288,7 @@
             <button class="checkout-submit" id="checkoutSubmit" type="submit">
               Отправить заказ официанту
             </button>
-            <small class="checkout-help">После отправки официант проверит заказ и передаст его на кухню.</small>
+            <small class="checkout-help">После отправки официант подтвердит заказ: еда уйдёт на кухню, а напитки — в бар.</small>
           </form>
         </div>
       </div>
@@ -293,7 +297,7 @@
     <div class="order-toast" id="orderToast" role="status" aria-live="polite" hidden></div>
 
     <script src="menu-data.js"></script>
-    <script src="extra-menu-data.js?v=web-orders-20261001"></script>
-    <script src="app.js?v=web-orders-20261001"></script>
+    <script src="extra-menu-data.js?v=stations-20261001"></script>
+    <script src="app.js?v=stations-20261001"></script>
   </body>
 </html>

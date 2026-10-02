@@ -394,6 +394,7 @@ async function submitOrder(event) {
     serviceType: String(form.get("serviceType") || ""),
     customerName: String(form.get("customerName") || ""),
     customerPhone: String(form.get("customerPhone") || ""),
+    guestCount: Number(form.get("guestCount")),
     customerNote: String(form.get("customerNote") || ""),
     deliveryCity: String(form.get("deliveryCity") || ""),
     deliveryStreet: String(form.get("deliveryStreet") || ""),
@@ -434,7 +435,7 @@ async function submitOrder(event) {
     setOrderStatus("");
     cartDialog.close();
     showToast(
-      `Заказ №${result.number} принят. Официант подтвердит его и отправит на кухню.`,
+      `Заказ №${result.number} принят. Официант подтвердит его и распределит между кухней и баром.`,
     );
   } catch (error) {
     setOrderStatus(
