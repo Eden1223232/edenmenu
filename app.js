@@ -13,17 +13,14 @@ const checkoutSubmit = document.querySelector("#checkoutSubmit");
 const orderStatus = document.querySelector("#orderStatus");
 const deliveryFields = document.querySelector("#deliveryFields");
 const orderToast = document.querySelector("#orderToast");
-const defaultCategoryId = "seti";
+const defaultCategoryId = "all";
 const cartStorageKey = "edenfood-cart-v1";
 const pendingStorageKey = "edenfood-pending-order-v1";
 const apiBase = ["localhost", "127.0.0.1"].includes(location.hostname)
   ? "http://localhost:3000"
   : "https://app.edenfood.xyz";
 
-const menuCategories = [
-  ...window.EDEN_MENU.filter((category) => category.id === defaultCategoryId),
-  ...window.EDEN_MENU.filter((category) => category.id !== defaultCategoryId),
-];
+const menuCategories = [...window.EDEN_MENU];
 
 const escapeHtml = (value = "") =>
   String(value)
@@ -44,6 +41,16 @@ const formatPrice = (kopecks) => {
   return `${Number.isInteger(rubles) ? rubles : rubles.toFixed(2).replace(".", ",")} руб`;
 };
 
+const fetchWithTimeout = async (url, options = {}, timeoutMs = 8000) => {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    window.clearTimeout(timeout);
+  }
+};
+
 const normalizedName = (value) =>
   String(value || "")
     .trim()
@@ -58,6 +65,71 @@ menuCategories.forEach((category) => {
     item.available = item.sellable !== false && item.priceKopecks !== null;
   });
 });
+
+const snackImages = new Map([
+  ["Картошка фри", "assets/snacks/fries.webp"],
+  ["Палочки моцарелла", "assets/snacks/cheese-sticks.webp"],
+  ["Нагетсы", "assets/snacks/nuggets.webp"],
+  ["Картофельные шарики", "assets/snacks/potato-balls.webp"],
+]);
+
+const stableItemSort = (category, rankItem) => {
+  const originalIndex = new Map(category.items.map((item, index) => [item, index]));
+  category.items.sort(
+    (left, right) =>
+      rankItem(left) - rankItem(right) ||
+      originalIndex.get(left) - originalIndex.get(right),
+  );
+};
+
+const garnishes = menuCategories.find((category) => category.id === "garnishes");
+if (garnishes) {
+  const garnishOrder = new Map([
+    ["Картошка фри", 0],
+    ["Палочки моцарелла", 1],
+    ["Нагетсы", 2],
+    ["Картофельные шарики", 3],
+  ]);
+  garnishes.items.forEach((item) => {
+    const image = snackImages.get(item.name);
+    if (image) {
+      item.image = image;
+      item.imageFit = "cover";
+    }
+  });
+  stableItemSort(garnishes, (item) => garnishOrder.get(item.name) ?? 100);
+}
+
+const desserts = menuCategories.find((category) => category.id === "desserts");
+if (desserts) {
+  stableItemSort(desserts, (item) => {
+    if (item.name.startsWith("Пончик")) return 0;
+    if (item.name.startsWith("Чизкейк")) return 1;
+    return 2;
+  });
+}
+
+const featuredCategoryOrder = [
+  "garnishes",
+  "desserts",
+  "seti",
+  "urumaki",
+  "cold_drinks",
+  "coffee",
+  "tea",
+  "drink_addons",
+];
+const categoryRank = new Map(
+  featuredCategoryOrder.map((categoryId, index) => [categoryId, index]),
+);
+const originalCategoryIndex = new Map(
+  menuCategories.map((category, index) => [category, index]),
+);
+menuCategories.sort(
+  (left, right) =>
+    (categoryRank.get(left.id) ?? 100) - (categoryRank.get(right.id) ?? 100) ||
+    originalCategoryIndex.get(left) - originalCategoryIndex.get(right),
+);
 
 const catalogById = new Map(
   menuCategories.flatMap((category) =>
@@ -152,7 +224,7 @@ function itemCard(item) {
   const imageClass =
     item.imageFit === "cover" ? "item-image item-image--cover" : "item-image";
   const imageMarkup = item.image
-    ? `<img class="${imageClass}" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy">`
+    ? `<img class="${imageClass}" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">`
     : `<div class="item-image item-image-placeholder" aria-hidden="true"><span>${escapeHtml(item.name)}</span></div>`;
   article.innerHTML = `
     ${imageMarkup}
@@ -166,6 +238,18 @@ function itemCard(item) {
       <div class="item-purchase">${quantityControlMarkup(item)}</div>
     </div>
   `;
+  const image = article.querySelector("img");
+  image?.addEventListener(
+    "error",
+    () => {
+      const placeholder = document.createElement("div");
+      placeholder.className = "item-image item-image-placeholder";
+      placeholder.setAttribute("aria-hidden", "true");
+      placeholder.innerHTML = `<span>${escapeHtml(item.name)}</span>`;
+      image.replaceWith(placeholder);
+    },
+    { once: true },
+  );
   return article;
 }
 
@@ -307,11 +391,7 @@ function handleCartAction(event) {
 
 function renderFilters() {
   const all = { id: "all", label: "Все меню" };
-  const filterCategories = [
-    ...menuCategories.filter((category) => category.id === defaultCategoryId),
-    all,
-    ...menuCategories.filter((category) => category.id !== defaultCategoryId),
-  ];
+  const filterCategories = [all, ...menuCategories];
   filters.replaceChildren(
     ...filterCategories.map((category) =>
       makeButton(category, category.id === activeCategoryId),
@@ -414,11 +494,15 @@ async function submitOrder(event) {
   checkoutSubmit.disabled = true;
   setOrderStatus("Отправляем заказ официанту…", "is-loading");
   try {
-    const response = await fetch(`${apiBase}/api/public-orders`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetchWithTimeout(
+      `${apiBase}/api/public-orders`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+      20000,
+    );
     const result = await response.json().catch(() => ({}));
     if (!response.ok)
       throw new Error(result.error || "Не удалось отправить заказ");
@@ -439,12 +523,15 @@ async function submitOrder(event) {
       `Заказ №${result.number} принят. Официант подтвердит его и распределит между кухней и баром.`,
     );
   } catch (error) {
-    setOrderStatus(
-      error instanceof Error
-        ? error.message
-        : "Не удалось отправить заказ. Попробуйте ещё раз.",
-      "is-error",
-    );
+    const message =
+      error?.name === "AbortError"
+        ? "Не получили подтверждение за 20 секунд. Корзина сохранена. Проверьте интернет и отправьте ещё раз — повтор не создаст дубль. Если срочно, позвоните +373 68 299 125."
+        : error instanceof TypeError
+          ? "Не удалось связаться с сервером. Проверьте интернет и повторите отправку — корзина сохранена."
+        : error instanceof Error
+          ? error.message
+          : "Не удалось отправить заказ. Попробуйте ещё раз.";
+    setOrderStatus(message, "is-error");
   } finally {
     submitting = false;
     updateCartIndicators();
@@ -453,9 +540,11 @@ async function submitOrder(event) {
 
 async function syncCatalog() {
   try {
-    const response = await fetch(`${apiBase}/api/public-menu`, {
-      headers: { Accept: "application/json" },
-    });
+    const response = await fetchWithTimeout(
+      `${apiBase}/api/public-menu`,
+      { headers: { Accept: "application/json" } },
+      8000,
+    );
     if (!response.ok) return;
     const data = await response.json();
     const live = new Map((data.items || []).map((item) => [item.id, item]));
@@ -510,3 +599,14 @@ checkoutForm.addEventListener("change", (event) => {
   if (event.target.matches('input[name="serviceType"]')) updateDeliveryFields();
 });
 checkoutForm.addEventListener("submit", submitOrder);
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js?v=menu-20261003", { updateViaCache: "none" })
+      .then((registration) => registration.update())
+      .catch(() => {
+        /* Ordering remains available online when offline caching is unsupported. */
+      });
+  });
+}
