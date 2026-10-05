@@ -13,7 +13,10 @@ const checkoutSubmit = document.querySelector("#checkoutSubmit");
 const orderStatus = document.querySelector("#orderStatus");
 const deliveryFields = document.querySelector("#deliveryFields");
 const orderToast = document.querySelector("#orderToast");
-const defaultCategoryId = "all";
+const defaultCategoryId = "seti";
+const productDialog = document.querySelector("#productDialog");
+const productDetail = document.querySelector("#productDetail");
+let selectedProductId = null;
 const cartStorageKey = "edenfood-cart-v1";
 const pendingStorageKey = "edenfood-pending-order-v1";
 const apiBase = ["localhost", "127.0.0.1"].includes(location.hostname)
@@ -110,10 +113,13 @@ if (desserts) {
 }
 
 const featuredCategoryOrder = [
-  "garnishes",
-  "desserts",
+  "street_rolls",
   "seti",
   "urumaki",
+  "roll_vtemp",
+  "desserts",
+  "garnishes",
+  "miniroll",
   "cold_drinks",
   "coffee",
   "tea",
@@ -188,6 +194,9 @@ function persistCart() {
 }
 
 function quantityControlMarkup(item, compact = false) {
+  if (item.enquiryOnly) {
+    return `<a class="product-enquiry" href="https://t.me/edenfood?text=${encodeURIComponent(`Здравствуйте! Хочу заказать ${item.name}. Подскажите цену.`)}" target="_blank" rel="noreferrer">Уточнить и заказать ↗</a>`;
+  }
   if (!item.available)
     return '<span class="unavailable-label">Временно недоступно</span>';
   const quantity = cart[item.catalogId] || 0;
@@ -227,10 +236,10 @@ function itemCard(item) {
     ? `<img class="${imageClass}" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">`
     : `<div class="item-image item-image-placeholder" aria-hidden="true"><span>${escapeHtml(item.name)}</span></div>`;
   article.innerHTML = `
-    ${imageMarkup}
+    <button class="product-image-button" type="button" data-product-id="${escapeHtml(item.catalogId)}" aria-label="Фото и состав: ${escapeHtml(item.name)}">${imageMarkup}<span class="image-expand" aria-hidden="true">↗</span></button>
     <div class="item-body">
       <div class="item-top">
-        <h4>${escapeHtml(item.name)}</h4>
+        <h4><button class="product-name-button" type="button" data-product-id="${escapeHtml(item.catalogId)}">${escapeHtml(item.name)}</button></h4>
         <span class="price">${escapeHtml(item.price)}</span>
       </div>
       <p class="item-desc">${escapeHtml(item.description || "Состав уточните у администратора.")}</p>
@@ -290,17 +299,19 @@ function textMenu(category, items) {
 
 function matchesSearch(item) {
   if (!searchQuery) return true;
-  const haystack = `${item.name || ""} ${item.description || ""} ${item.meta || ""} ${item.price || ""}`.toLowerCase();
-  return haystack.includes(searchQuery);
+  const haystack = normalizedName(`${item.name || ""} ${item.description || ""} ${item.meta || ""} ${item.price || ""}`);
+  return normalizedName(searchQuery).split(/\s+/).every((word) => haystack.includes(word));
 }
 
 function renderMenu() {
   menuGrid.innerHTML = "";
   const categories =
-    activeCategoryId === "all"
+    activeCategoryId === "all" || searchQuery
       ? menuCategories
       : menuCategories.filter((category) => category.id === activeCategoryId);
   let renderedCount = 0;
+  const currentCategory = menuCategories.find((category) => category.id === activeCategoryId);
+  document.querySelector("#menuTitle").textContent = searchQuery ? "Нашли для вас" : currentCategory?.label || "Всё меню EDEN";
   categories.forEach((category) => {
     const items = category.items.filter(matchesSearch);
     if (!items.length) return;
@@ -308,6 +319,7 @@ function renderMenu() {
     title.className = "category-title";
     title.id = category.id;
     title.innerHTML = `<span>${String(items.length).padStart(2, "0")}</span><h3>${escapeHtml(category.label)}</h3>`;
+    if (category.description) title.insertAdjacentHTML("beforeend", `<p class="category-description">${escapeHtml(category.description)}</p>`);
     const featuredItems =
       category.layout === "text-list"
         ? items.filter((item) => item.display === "card")
@@ -378,6 +390,7 @@ function changeQuantity(id, delta) {
   persistCart();
   renderMenu();
   renderCart();
+  if (productDialog?.open) renderProductDetail();
 }
 
 function handleCartAction(event) {
@@ -400,18 +413,52 @@ function renderFilters() {
 }
 
 function selectCategory(button) {
+  activateCategory(button.dataset.category);
+}
+
+function activateCategory(id, scroll = true) {
+  if (id !== "all" && !menuCategories.some((category) => category.id === id)) return;
   filters.querySelectorAll("button").forEach((item) => {
-    const active = item === button;
+    const active = item.dataset.category === id;
     item.classList.toggle("active", active);
     item.setAttribute("aria-pressed", String(active));
   });
-  activeCategoryId = button.dataset.category;
+  activeCategoryId = id;
   searchQuery = "";
   menuSearch.value = "";
   renderMenu();
-  requestAnimationFrame(() =>
-    menuGrid.scrollIntoView({ behavior: "smooth", block: "start" }),
-  );
+  document.querySelectorAll("[data-select-category]").forEach((item) => item.classList.toggle("is-selected", item.dataset.selectCategory === id));
+  if (scroll) requestAnimationFrame(() => document.querySelector("#menu").scrollIntoView({ behavior: "smooth", block: "start" }));
+}
+
+function renderCategoryTiles() {
+  const tiles = document.querySelector("#categoryTiles");
+  tiles.innerHTML = menuCategories.map((category, index) => {
+    const photo = category.items.find((item) => item.image)?.image;
+    return `<a class="category-tile ${index >= 8 ? "category-tile--extra" : ""}" href="#menu" data-select-category="${escapeHtml(category.id)}">
+      ${photo ? `<img src="${escapeHtml(photo)}" alt="" loading="lazy" decoding="async">` : '<span class="category-wordmark" aria-hidden="true">EDEN</span>'}
+      <span class="category-tile-copy"><strong>${escapeHtml(category.label)}</strong><small>${category.items.length} позиций <span aria-hidden="true">↗</span></small></span>
+      ${category.id === "street_rolls" ? '<span class="new-tag">НОВИНКА</span>' : ''}</a>`;
+  }).join("");
+  tiles.querySelectorAll("img").forEach((image) => image.addEventListener("error", () => image.remove(), { once: true }));
+}
+
+function renderProductDetail() {
+  const item = catalogById.get(selectedProductId);
+  if (!item) return;
+  productDetail.innerHTML = `<div class="product-detail-photo">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : '<span>EDENFOOD</span>'}</div>
+    <div class="product-detail-copy"><p class="eyebrow">Меню EDEN</p><h2 id="productTitle">${escapeHtml(item.name)}</h2>
+      <p>${escapeHtml(item.description || "Состав уточните у администратора.")}</p>
+      <small>${escapeHtml(item.meta || "")}</small>
+      <div class="product-detail-purchase"><strong>${escapeHtml(item.price)}</strong>${quantityControlMarkup(item)}</div>
+      ${item.imageNote ? `<small class="image-note">${escapeHtml(item.imageNote)}</small>` : ''}</div>`;
+}
+
+function openProduct(id) {
+  if (!catalogById.has(id)) return;
+  selectedProductId = id;
+  renderProductDetail();
+  if (!productDialog.open) productDialog.showModal();
 }
 
 function openCart() {
@@ -549,6 +596,7 @@ async function syncCatalog() {
     const data = await response.json();
     const live = new Map((data.items || []).map((item) => [item.id, item]));
     catalogById.forEach((item, id) => {
+      if (item.enquiryOnly) return;
       const current = live.get(id);
       if (!current || normalizedName(current.name) !== normalizedName(item.name)) {
         item.available = false;
@@ -562,12 +610,14 @@ async function syncCatalog() {
     persistCart();
     renderMenu();
     renderCart();
+    if (productDialog?.open) renderProductDetail();
   } catch {
     /* Static prices remain visible; the server still verifies them at checkout. */
   }
 }
 
 renderFilters();
+renderCategoryTiles();
 renderMenu();
 renderCart();
 updateDeliveryFields();
@@ -578,6 +628,30 @@ filters.addEventListener("click", (event) => {
   if (button) selectCategory(button);
 });
 menuGrid.addEventListener("click", handleCartAction);
+menuGrid.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-product-id]");
+  if (button) openProduct(button.dataset.productId);
+});
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("[data-select-category]");
+  if (!link) return;
+  event.preventDefault();
+  activateCategory(link.dataset.selectCategory);
+  history.replaceState(null, "", `#menu/${link.dataset.selectCategory}`);
+});
+document.querySelector("#moreCategories").addEventListener("click", (event) => {
+  const button = event.currentTarget;
+  const expanded = button.getAttribute("aria-expanded") !== "true";
+  button.setAttribute("aria-expanded", String(expanded));
+  document.querySelector("#categoryTiles").classList.toggle("show-all", expanded);
+  button.textContent = expanded ? "Свернуть разделы ↑" : "Показать все разделы ↓";
+});
+document.querySelector("#closeProduct").addEventListener("click", () => productDialog.close());
+productDialog.addEventListener("click", (event) => {
+  if (event.target === productDialog) productDialog.close();
+});
+productDetail.addEventListener("click", handleCartAction);
+if (location.hash.startsWith("#menu/")) activateCategory(location.hash.slice(6), true);
 cartItemsElement.addEventListener("click", handleCartAction);
 menuSearch.addEventListener("input", (event) => {
   searchQuery = event.target.value.trim().toLowerCase();
@@ -603,7 +677,7 @@ checkoutForm.addEventListener("submit", submitOrder);
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.js?v=menu-20261003", { updateViaCache: "none" })
+      .register("/sw.js?v=street-20261005", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */
