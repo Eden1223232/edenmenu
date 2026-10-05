@@ -297,23 +297,45 @@ function textMenu(category, items) {
   return menu;
 }
 
-function matchesSearch(item) {
-  if (!searchQuery) return true;
-  const haystack = normalizedName(`${item.name || ""} ${item.description || ""} ${item.meta || ""} ${item.price || ""}`);
-  return normalizedName(searchQuery).split(/\s+/).every((word) => haystack.includes(word));
-}
-
 function renderMenu() {
   menuGrid.innerHTML = "";
+  filters.querySelectorAll("button").forEach((button) => {
+    const selected = button.dataset.category === (searchQuery ? "all" : activeCategoryId);
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  const searchStatus = document.querySelector("#menuSearchStatus");
+  document.querySelector("#clearMenuSearch").hidden = !searchQuery;
+  if (searchQuery) {
+    const results = window.EdenMenuSearch.search(menuCategories, searchQuery);
+    document.querySelector("#menuTitle").textContent = "Нашли для вас";
+    searchStatus.textContent = `Найдено: ${results.length} · Поиск по всему меню, независимо от раздела`;
+    results.forEach(({item, category}) => {
+      const card = itemCard(item);
+      const label = document.createElement("span");
+      label.className = "search-category-label";
+      label.textContent = category.label;
+      card.querySelector(".item-body").prepend(label);
+      menuGrid.append(card);
+    });
+    if (!results.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.textContent = "Ничего не нашли. Попробуйте часть названия или ингредиент: «фила», «лосось», «креветка».";
+      menuGrid.append(empty);
+    }
+    return;
+  }
+  searchStatus.textContent = "Ищем во всех разделах. Можно написать «фила», Philadelphia или название с опечаткой.";
   const categories =
-    activeCategoryId === "all" || searchQuery
+    activeCategoryId === "all"
       ? menuCategories
       : menuCategories.filter((category) => category.id === activeCategoryId);
   let renderedCount = 0;
   const currentCategory = menuCategories.find((category) => category.id === activeCategoryId);
   document.querySelector("#menuTitle").textContent = searchQuery ? "Нашли для вас" : currentCategory?.label || "Всё меню EDEN";
   categories.forEach((category) => {
-    const items = category.items.filter(matchesSearch);
+    const items = category.items;
     if (!items.length) return;
     const title = document.createElement("div");
     title.className = "category-title";
@@ -588,7 +610,7 @@ async function submitOrder(event) {
 async function syncCatalog() {
   try {
     const response = await fetchWithTimeout(
-      `${apiBase}/api/public-menu`,
+      `${apiBase}/api/public-menu?v=street-199-20261005`,
       { headers: { Accept: "application/json" } },
       8000,
     );
@@ -657,6 +679,12 @@ menuSearch.addEventListener("input", (event) => {
   searchQuery = event.target.value.trim().toLowerCase();
   renderMenu();
 });
+document.querySelector("#clearMenuSearch").addEventListener("click", () => {
+  searchQuery = "";
+  menuSearch.value = "";
+  renderMenu();
+  menuSearch.focus();
+});
 document.querySelector("#categoriesPrevious")?.addEventListener("click", () =>
   filters.scrollBy({ left: -Math.max(260, filters.clientWidth * 0.7), behavior: "smooth" }),
 );
@@ -677,7 +705,7 @@ checkoutForm.addEventListener("submit", submitOrder);
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.js?v=street-20261005", { updateViaCache: "none" })
+      .register("/sw.js?v=street-199-search-20261005-2", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */

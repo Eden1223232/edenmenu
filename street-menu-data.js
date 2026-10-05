@@ -12,18 +12,17 @@
   const street = {
     id: "street_rolls",
     label: "Стрит-роллы",
-    description: "Любимые сочетания в новом формате — роллы в тубусе EDENFOOD. Удобно взять с собой. Цену выбранного варианта уточняйте при заказе.",
+    description: "Любимые сочетания в новом формате — роллы в тубусе EDENFOOD. Любой стрит-ролл — 199 руб. Тубус включён в стоимость.",
     items: variants.map(([slug, name, composition]) => ({
       catalogId: `edenfood-street-${slug}`,
       name: `Стрит-ролл ${name}`,
-      price: "Цена уточняется",
+      price: "199 руб",
       meta: "Ролл в тубусе",
       description: `Состав: ${composition}`,
       image: `assets/street-rolls/${slug}.webp`,
       imageFit: "cover",
       imageNote: "На фото — визуализация фирменной упаковки EDENFOOD. Оформление при выдаче может отличаться.",
-      enquiryOnly: true,
-      sellable: false,
+      sellable: true,
     })),
   };
   if (!window.EDEN_MENU.some((category) => category.id === street.id)) window.EDEN_MENU.push(street);

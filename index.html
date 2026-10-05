@@ -10,7 +10,7 @@
     />
     <link rel="preconnect" href="https://ucrabs.by" />
     <link rel="stylesheet" href="styles.css?v=street-20261005" />
-    <link rel="stylesheet" href="storefront.css?v=street-20261005-2" />
+    <link rel="stylesheet" href="storefront.css?v=street-199-search-20261005-2" />
   </head>
   <body>
     <header class="site-header">
@@ -65,9 +65,11 @@
           <div class="menu-tools">
             <label class="search-field">
               <span>Поиск по меню</span>
-              <input id="menuSearch" type="search" placeholder="Название, состав или цена" autocomplete="off" />
+              <input id="menuSearch" type="search" placeholder="Например: фила, лосось, мини-ролл" autocomplete="off" aria-describedby="menuSearchStatus" />
             </label>
+            <button id="clearMenuSearch" class="clear-menu-search" type="button" hidden>Сбросить поиск ×</button>
           </div>
+          <p id="menuSearchStatus" class="menu-search-status" role="status" aria-live="polite"></p>
           <div class="category-rail-heading">
             <div>
               <strong>Выберите раздел</strong>
@@ -289,7 +291,8 @@
     </dialog>
     <script src="menu-data.js?v=street-20261005"></script>
     <script src="extra-menu-data.js?v=street-20261005"></script>
-    <script src="street-menu-data.js?v=street-20261005"></script>
-    <script src="app.js?v=street-20261005"></script>
+    <script src="street-menu-data.js?v=street-199-search-20261005"></script>
+    <script src="menu-search.js?v=street-199-search-20261005"></script>
+    <script src="app.js?v=street-199-search-20261005-2"></script>
   </body>
 </html>
