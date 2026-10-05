@@ -1,10 +1,11 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = `${CACHE_PREFIX}-shell-street-199-search-20261005-2`;
+const SHELL_CACHE = `${CACHE_PREFIX}-shell-street-199-search-20261005-3`;
 const SHELL_URLS = [
   "/",
   "/index.html",
   "/styles.css?v=street-20261005",
   "/storefront.css?v=street-199-search-20261005-2",
+  "/menu-search.css?v=street-199-search-20261005",
   "/menu-data.js?v=street-20261005",
   "/extra-menu-data.js?v=street-20261005",
   "/street-menu-data.js?v=street-199-search-20261005",
