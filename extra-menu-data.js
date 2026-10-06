@@ -184,6 +184,34 @@
     window.EDEN_MENU.push({ id: "roll_vtemp", label: "Горячие роллы", items: hotItems });
   }
 
+  const setsCategory = window.EDEN_MENU.find((category) => category.id === "seti");
+  if (setsCategory) {
+    if (!setsCategory.items.some((item) => item.catalogId === "edenfood-seti-montana")) {
+      setsCategory.items.push({
+        catalogId: "edenfood-seti-montana",
+        name: "Сет МОНТАНА",
+        price: "550 руб",
+        originalPriceKopecks: 62000,
+        meta: "32 шт. · 1000 г.",
+        description: "Состав: Филадельфия — рис, сыр, лосось; двойная креветка — рис, сыр, креветка, креветка в темпуре, огурец, трюфельный соус, икра тобико, нори; ролл с жареным лососем в огурце — рис, сыр, жареный лосось, авокадо, огурец, терияки, кунжут, нори; ролл с тунцом татаки — рис, сыр, авокадо, салат айсберг, тунец, терияки, ореховый соус, нори. Вес: 1000 г.",
+        image: "assets/sets/montana.jpg",
+        source: "",
+      });
+    }
+    if (!setsCategory.items.some((item) => item.catalogId === "edenfood-seti-khrust")) {
+      setsCategory.items.push({
+        catalogId: "edenfood-seti-khrust",
+        name: "Хруст сет",
+        price: "420 руб",
+        originalPriceKopecks: 45000,
+        meta: "700 г.",
+        description: "Состав: темпура с креветкой и авокадо — рис, сыр, креветка, салат айсберг, бекон, спайси, терияки, кунжут, темпура, нори; темпура с жареным лососем и авокадо — рис, сыр, жареный лосось, авокадо, соус терияки, темпура, кунжут, нори; темпура с угрем — рис, сыр, угорь, огурец, икра тобико, соус терияки, темпура, кунжут, нори. Вес: 700 г. Роллы в темпуре не сохраняют тепло при доставке. Мы готовим их в последний момент, но в пути они остывают. Спасибо за понимание!",
+        image: "assets/sets/khrust.jpg",
+        source: "",
+      });
+    }
+  }
+
   const bigFila = window.EDEN_MENU
     .flatMap((category) => category.items)
     .find((item) => item.name === "БИГ ФИЛА");

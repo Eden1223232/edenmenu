@@ -351,6 +351,31 @@ footer p {
   font-weight: 900;
 }
 
+.price-stack {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.sale-badge {
+  border-radius: 999px;
+  padding: 2px 7px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.old-price {
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .text-menu {
   grid-column: 1 / -1;
   display: grid;

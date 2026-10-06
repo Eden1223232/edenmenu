@@ -240,7 +240,10 @@ function itemCard(item) {
     <div class="item-body">
       <div class="item-top">
         <h4><button class="product-name-button" type="button" data-product-id="${escapeHtml(item.catalogId)}">${escapeHtml(item.name)}</button></h4>
-        <span class="price">${escapeHtml(item.price)}</span>
+        <span class="price-stack">
+          ${item.originalPriceKopecks ? `<span class="sale-badge">Акция</span><s class="old-price">${escapeHtml(formatPrice(item.originalPriceKopecks))}</s>` : ""}
+          <span class="price">${escapeHtml(item.price)}</span>
+        </span>
       </div>
       <p class="item-desc">${escapeHtml(item.description || "Состав уточните у администратора.")}</p>
       ${item.meta ? `<div class="item-meta"><span>${escapeHtml(item.meta)}</span></div>` : ""}
@@ -705,7 +708,7 @@ checkoutForm.addEventListener("submit", submitOrder);
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.js?v=street-199-search-20261005-2", { updateViaCache: "none" })
+      .register("/sw.js?v=street-199-search-20261006-promo-sets", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */
