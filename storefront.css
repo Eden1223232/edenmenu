@@ -135,3 +135,44 @@ body { background: #090909; }
 }
 @media (max-width:370px) { .brand img { display:none; } .menu-grid { grid-template-columns:1fr; } .category-tile-copy strong { font-size:14px; } }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .category-tile,.category-tile img,.product-image-button .item-image { transition:none; } }
+
+.account-header-button { min-height:44px; padding:0 15px; border:1px solid #a63b40; border-radius:12px; background:#211719; color:#fff; cursor:pointer; white-space:nowrap; }
+.account-dialog { width:min(690px,calc(100vw - 24px)); max-width:none; max-height:min(90dvh,860px); margin:auto; padding:0; overflow:hidden; border:1px solid #ffffff20; border-radius:22px; background:#121010; color:var(--text); box-shadow:0 28px 100px #000c; }
+.account-dialog::backdrop { background:#000c; backdrop-filter:blur(6px); }
+.account-panel { max-height:min(90dvh,860px); overflow:auto; }
+.account-header { position:sticky; top:0; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; border-bottom:1px solid var(--line); background:#121010f5; }
+.account-header p,.account-header h2 { margin:0; }
+.account-header p { color:var(--gold); font-size:10px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }
+.account-header h2 { margin-top:3px; font-size:29px; }
+.account-body { padding:20px; }
+.account-mode-switch,.customer-order-tabs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; padding:5px; border:1px solid var(--line); border-radius:12px; background:#ffffff08; }
+.account-mode-switch button,.customer-order-tabs button { min-height:42px; border:0; border-radius:8px; background:transparent; color:var(--muted); cursor:pointer; font-weight:800; }
+.account-mode-switch button.is-active,.customer-order-tabs button.is-active { background:#85232a; color:#fff; }
+.account-hint { margin:13px 0 18px; color:var(--muted); font-size:13px; line-height:1.5; }
+.account-form { display:grid; gap:13px; }
+.account-form label > span { display:block; margin-bottom:7px; color:#ead49f; font-size:11px; font-weight:850; letter-spacing:.06em; text-transform:uppercase; }
+.account-form input { width:100%; min-height:50px; padding:0 13px; border:1px solid #ffffff26; border-radius:11px; background:#ffffff0c; color:#fff; outline:none; }
+.account-form input:focus { border-color:var(--gold); box-shadow:0 0 0 3px #d7b56d20; }
+.account-status { min-height:18px; margin:0; color:var(--muted); font-size:12px; line-height:1.5; }
+.account-status.is-error { color:#ff9ba0; }
+.account-status.is-ok { color:#a8e7ad; }
+.account-profile { display:flex; align-items:center; gap:12px; padding:14px; border:1px solid #ffffff1c; border-radius:14px; background:#ffffff08; }
+.account-avatar { display:grid; width:42px; height:42px; flex:0 0 auto; place-items:center; border-radius:12px; background:#85232a; color:#fff; font-weight:900; }
+.account-profile div { display:grid; min-width:0; gap:4px; }
+.account-profile strong { overflow:hidden; text-overflow:ellipsis; }
+.account-profile small { color:var(--muted); }
+.account-logout { margin-left:auto; min-height:38px; padding:0 12px; border:1px solid #ffffff25; border-radius:9px; background:transparent; color:var(--muted); cursor:pointer; }
+.customer-order-tabs { margin-top:18px; }
+.customer-orders { display:grid; gap:10px; margin-top:12px; }
+.customer-order-card { padding:14px; border:1px solid #ffffff20; border-radius:14px; background:#ffffff08; }
+.customer-order-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.customer-order-title { font-weight:900; }
+.customer-order-date { margin-top:4px; color:var(--muted); font-size:11px; }
+.customer-order-status { display:inline-flex; max-width:60%; padding:6px 9px; border-radius:999px; background:#ffffff12; color:#f2dba7; font-size:10px; font-weight:850; line-height:1.35; text-align:center; }
+.customer-order-status.is-ready,.customer-order-status.is-paid { background:#173820; color:#a8e7ad; }
+.customer-order-status.is-error { background:#421d20; color:#ffb4b8; }
+.customer-order-items { margin:12px 0 0; color:#e6ded6; font-size:12px; line-height:1.55; }
+.customer-order-total { display:flex; justify-content:space-between; gap:12px; margin-top:12px; padding-top:10px; border-top:1px solid #ffffff16; font-size:12px; }
+.customer-orders-empty { padding:30px 16px; border:1px dashed #ffffff2b; border-radius:14px; color:var(--muted); font-size:13px; line-height:1.5; text-align:center; }
+.account-profile[hidden],#accountGuest[hidden],#accountSignedIn[hidden],.account-form label[hidden],.customer-orders[hidden] { display:none; }
+@media (max-width:760px) { .account-header-button { min-height:42px; padding:0 10px; font-size:11px; } .account-dialog { width:calc(100vw - 16px); max-height:92dvh; border-radius:18px; } .account-panel { max-height:92dvh; } .account-header { padding:14px 16px; } .account-body { padding:14px; } .customer-order-top { gap:7px; } .customer-order-status { max-width:52%; } }

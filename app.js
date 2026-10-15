@@ -11,6 +11,19 @@ const floatingCartButton = document.querySelector("#floatingCartButton");
 const checkoutForm = document.querySelector("#checkoutForm");
 const checkoutSubmit = document.querySelector("#checkoutSubmit");
 const orderStatus = document.querySelector("#orderStatus");
+const accountButton = document.querySelector("#accountButton");
+const accountDialog = document.querySelector("#accountDialog");
+const accountForm = document.querySelector("#accountForm");
+const accountGuest = document.querySelector("#accountGuest");
+const accountSignedIn = document.querySelector("#accountSignedIn");
+const accountNameField = document.querySelector("#accountNameField");
+const accountSubmit = document.querySelector("#accountSubmit");
+const accountStatus = document.querySelector("#accountStatus");
+const accountOrdersStatus = document.querySelector("#accountOrdersStatus");
+const currentOrdersElement = document.querySelector("#customerCurrentOrders");
+const historyOrdersElement = document.querySelector("#customerOrderHistory");
+const checkoutCustomerName = document.querySelector("#checkoutCustomerName");
+const checkoutCustomerPhone = document.querySelector("#checkoutCustomerPhone");
 const deliveryFields = document.querySelector("#deliveryFields");
 const orderToast = document.querySelector("#orderToast");
 const defaultCategoryId = "seti";
@@ -166,6 +179,9 @@ let activeCategoryId = menuCategories.some(
 let searchQuery = "";
 let submitting = false;
 let toastTimer = 0;
+let customer = null;
+let customerOrders = [];
+let accountMode = "login";
 
 function cartLines() {
   return Object.entries(cart)
@@ -487,6 +503,7 @@ function openProduct(id) {
 }
 
 function openCart() {
+  updateCheckoutIdentity();
   renderCart();
   if (!cartDialog.open) cartDialog.showModal();
 }
@@ -538,15 +555,204 @@ function showToast(message) {
   }, 9000);
 }
 
+function setAccountStatus(message, type = "") {
+  if (!accountStatus) return;
+  accountStatus.textContent = message;
+  accountStatus.className = `account-status ${type}`.trim();
+}
+
+function setAccountOrdersStatus(message, type = "") {
+  if (!accountOrdersStatus) return;
+  accountOrdersStatus.textContent = message;
+  accountOrdersStatus.className = `account-status ${type}`.trim();
+}
+
+function updateCheckoutIdentity() {
+  if (checkoutCustomerName) checkoutCustomerName.value = customer?.name || "";
+  if (checkoutCustomerPhone) checkoutCustomerPhone.value = customer?.phone || "";
+  if (accountButton) accountButton.textContent = customer ? "Мои заказы" : "Войти";
+}
+
+function setAccountMode(mode) {
+  accountMode = mode === "register" ? "register" : "login";
+  accountNameField.hidden = accountMode !== "register";
+  const password = accountForm.elements.namedItem("password");
+  password.autocomplete = accountMode === "register" ? "new-password" : "current-password";
+  accountSubmit.textContent = accountMode === "register" ? "Создать аккаунт" : "Войти";
+  document.querySelectorAll("[data-account-mode]").forEach((button) => {
+    const active = button.dataset.accountMode === accountMode;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  setAccountStatus("");
+}
+
+function setCustomer(value) {
+  customer = value || null;
+  accountGuest.hidden = Boolean(customer);
+  accountSignedIn.hidden = !customer;
+  if (customer) {
+    document.querySelector("#accountCustomerName").textContent = customer.name;
+    document.querySelector("#accountCustomerPhone").textContent = customer.phone;
+    accountForm.reset();
+  }
+  updateCheckoutIdentity();
+  renderCustomerOrders();
+}
+
+function orderDate(value) {
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime())
+    ? "Дата уточняется"
+    : parsed.toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+function orderCardMarkup(order) {
+  const statusClass = order.status === "READY" || order.status === "PAID"
+    ? "is-ready"
+    : order.status === "CANCELLED"
+      ? "is-error"
+      : order.status === "PAID"
+        ? "is-paid"
+        : "";
+  const serviceNames = { DINE_IN: "На месте", TAKEAWAY: "Самовывоз", DELIVERY: "Доставка" };
+  const service = serviceNames[order.serviceType] || order.serviceType;
+  const address = order.serviceType === "DELIVERY"
+    ? [order.deliveryCity, order.deliveryStreet, order.deliveryHouse ? `дом ${order.deliveryHouse}` : "", order.deliveryApartment ? `кв. ${order.deliveryApartment}` : ""].filter(Boolean).join(", ")
+    : "";
+  const meta = [service, order.guestCount ? `${order.guestCount} персон` : "", address].filter(Boolean).join(" · ");
+  return `<article class="customer-order-card">
+    <div class="customer-order-top"><div><div class="customer-order-title">Заказ №${escapeHtml(order.number)}</div><div class="customer-order-date">${escapeHtml(orderDate(order.orderedAt))}${meta ? ` · ${escapeHtml(meta)}` : ""}</div></div>
+      <span class="customer-order-status ${statusClass}">${escapeHtml(order.statusLabel || "Статус обновляется")}</span></div>
+    <p class="customer-order-items">${escapeHtml(order.itemsSummary || "Состав заказа уточняется")}</p>
+    ${order.customerNote ? `<p class="customer-order-date">Примечание: ${escapeHtml(order.customerNote)}</p>` : ""}
+    ${order.cancellationReason ? `<p class="customer-order-date">Причина: ${escapeHtml(order.cancellationReason)}</p>` : ""}
+    <div class="customer-order-total"><span>Сумма</span><strong>${escapeHtml(formatPrice(order.totalKopecks))}</strong></div>
+  </article>`;
+}
+
+function renderCustomerOrders() {
+  if (!currentOrdersElement || !historyOrdersElement) return;
+  const active = customerOrders.filter((order) => !["PAID", "CANCELLED"].includes(order.status));
+  const history = customerOrders.filter((order) => ["PAID", "CANCELLED"].includes(order.status));
+  currentOrdersElement.innerHTML = active.length
+    ? active.map(orderCardMarkup).join("")
+    : '<div class="customer-orders-empty">Активных заказов пока нет. После отправки новый заказ появится здесь, а статус будет обновляться автоматически.</div>';
+  historyOrdersElement.innerHTML = history.length
+    ? history.map(orderCardMarkup).join("")
+    : '<div class="customer-orders-empty">Завершённые и отменённые заказы будут храниться здесь.</div>';
+}
+
+async function customerApi(path, options = {}, timeoutMs = 12000) {
+  const response = await fetchWithTimeout(`${apiBase}${path}`, {
+    ...options,
+    credentials: "include",
+  }, timeoutMs);
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "Не удалось связаться с EDEN");
+  return data;
+}
+
+async function refreshCustomerOrders() {
+  if (!customer) return;
+  try {
+    const data = await customerApi("/api/customer-orders", { headers: { Accept: "application/json" } });
+    customerOrders = data.orders || [];
+    renderCustomerOrders();
+    setAccountOrdersStatus("Статусы заказов обновляются автоматически.");
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("Войдите")) {
+      customerOrders = [];
+      setCustomer(null);
+      setAccountOrdersStatus("Сессия завершилась. Войдите ещё раз.", "is-error");
+      return;
+    }
+    setAccountOrdersStatus(error instanceof Error ? error.message : "Не удалось обновить заказы", "is-error");
+  }
+}
+
+async function loadCustomerAccount() {
+  try {
+    const data = await customerApi("/api/customer-auth/me", { headers: { Accept: "application/json" } });
+    setCustomer(data.customer);
+    if (data.customer) void refreshCustomerOrders();
+  } catch {
+    setCustomer(null);
+  }
+}
+
+async function openAccountDialog(mode) {
+  if (!customer && mode) setAccountMode(mode);
+  if (!accountDialog.open) accountDialog.showModal();
+  if (customer) void refreshCustomerOrders();
+}
+
+async function submitCustomerAuth(event) {
+  event.preventDefault();
+  const form = new FormData(accountForm);
+  const payload = {
+    phone: String(form.get("phone") || "").trim(),
+    password: String(form.get("password") || ""),
+  };
+  if (accountMode === "register") payload.name = String(form.get("name") || "").trim();
+  accountSubmit.disabled = true;
+  setAccountStatus(accountMode === "register" ? "Создаём аккаунт…" : "Входим…");
+  try {
+    const data = await customerApi(`/api/customer-auth/${accountMode}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    customerOrders = [];
+    setCustomer(data.customer);
+    setAccountOrdersStatus("Аккаунт открыт. Здесь будут видны этапы заказа.");
+    setAccountTab("current");
+    void refreshCustomerOrders();
+  } catch (error) {
+    setAccountStatus(error instanceof Error ? error.message : "Не удалось войти", "is-error");
+  } finally {
+    accountSubmit.disabled = false;
+  }
+}
+
+function setAccountTab(tab) {
+  const history = tab === "history";
+  currentOrdersElement.hidden = history;
+  historyOrdersElement.hidden = !history;
+  document.querySelectorAll("[data-order-tab]").forEach((button) => {
+    const active = button.dataset.orderTab === (history ? "history" : "current");
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+}
+
+async function logoutCustomer() {
+  try {
+    await customerApi("/api/customer-auth/logout", { method: "POST" });
+  } catch {
+    /* Clear the local view even if the network is unavailable. */
+  }
+  customerOrders = [];
+  setCustomer(null);
+  setAccountMode("login");
+  setAccountStatus("Вы вышли из аккаунта.", "is-ok");
+}
+
 async function submitOrder(event) {
   event.preventDefault();
   if (submitting || !cartSummary().count) return;
+  if (!customer) {
+    cartDialog.close();
+    await openAccountDialog("login");
+    setAccountStatus("Чтобы оформить заказ и видеть его статус, войдите или зарегистрируйтесь.");
+    return;
+  }
   const form = new FormData(checkoutForm);
   const guestCount = String(form.get("guestCount") || "").trim();
   const basePayload = {
     serviceType: String(form.get("serviceType") || ""),
-    customerName: String(form.get("customerName") || ""),
-    customerPhone: String(form.get("customerPhone") || ""),
+    customerName: customer.name,
+    customerPhone: customer.phone,
     guestCount: guestCount ? Number(guestCount) : null,
     customerNote: String(form.get("customerNote") || ""),
     deliveryCity: String(form.get("deliveryCity") || ""),
@@ -570,6 +776,7 @@ async function submitOrder(event) {
       `${apiBase}/api/public-orders`,
       {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       },
@@ -586,14 +793,19 @@ async function submitOrder(event) {
       /* Nothing else is required after a successful submission. */
     }
     checkoutForm.reset();
+    updateCheckoutIdentity();
     updateDeliveryFields();
     renderMenu();
     renderCart();
     setOrderStatus("");
     cartDialog.close();
     showToast(
-      `Заказ №${result.number} принят. Официант подтвердит его и распределит между кухней и баром.`,
+      `Заказ №${result.number} отправлен официанту. Его подтверждение и готовность будут видны в личном кабинете.`,
     );
+    setAccountTab("current");
+    setAccountOrdersStatus(`Заказ №${result.number} отправлен. Ожидайте подтверждения официанта.`, "is-ok");
+    if (!accountDialog.open) accountDialog.showModal();
+    void refreshCustomerOrders();
   } catch (error) {
     const message =
       error?.name === "AbortError"
@@ -604,6 +816,11 @@ async function submitOrder(event) {
           ? error.message
           : "Не удалось отправить заказ. Попробуйте ещё раз.";
     setOrderStatus(message, "is-error");
+    if (message.includes("Войдите в аккаунт")) {
+      cartDialog.close();
+      await openAccountDialog("login");
+      setAccountStatus("Войдите в аккаунт, чтобы отправить заказ.");
+    }
   } finally {
     submitting = false;
     updateCartIndicators();
@@ -704,11 +921,31 @@ checkoutForm.addEventListener("change", (event) => {
   if (event.target.matches('input[name="serviceType"]')) updateDeliveryFields();
 });
 checkoutForm.addEventListener("submit", submitOrder);
+accountButton?.addEventListener("click", () => void openAccountDialog());
+document.querySelector("#closeAccount")?.addEventListener("click", () => accountDialog.close());
+accountDialog?.addEventListener("click", (event) => {
+  if (event.target === accountDialog) accountDialog.close();
+});
+document.querySelectorAll("[data-account-mode]").forEach((button) => {
+  button.addEventListener("click", () => setAccountMode(button.dataset.accountMode));
+});
+accountForm?.addEventListener("submit", submitCustomerAuth);
+document.querySelector("#accountLogout")?.addEventListener("click", logoutCustomer);
+document.querySelectorAll("[data-order-tab]").forEach((button) => {
+  button.addEventListener("click", () => setAccountTab(button.dataset.orderTab));
+});
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && customer) void refreshCustomerOrders();
+});
+window.setInterval(() => {
+  if (!document.hidden && customer) void refreshCustomerOrders();
+}, 15000);
+void loadCustomerAccount();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.js?v=street-199-search-20261006-promo-sets", { updateViaCache: "none" })
+      .register("/sw.js?v=customer-accounts-20261015", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */

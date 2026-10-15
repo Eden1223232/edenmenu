@@ -10,7 +10,7 @@
     />
     <link rel="preconnect" href="https://ucrabs.by" />
     <link rel="stylesheet" href="styles.css?v=street-20261006-promo-sets" />
-    <link rel="stylesheet" href="storefront.css?v=street-199-search-20261005-2" />
+    <link rel="stylesheet" href="storefront.css?v=customer-accounts-20261015" />
     <link rel="stylesheet" href="menu-search.css?v=street-199-search-20261005" />
   </head>
   <body>
@@ -29,6 +29,7 @@
       <button class="header-action cart-header-button" id="headerCartButton" type="button">
         Корзина <span class="cart-count" data-cart-count>0</span>
       </button>
+      <button class="header-action account-header-button" id="accountButton" type="button">Войти</button>
     </header>
 
     <a class="giveaway-announcement" href="#giveaway">
@@ -190,6 +191,57 @@
       <b data-cart-total>0 руб</b>
     </button>
 
+    <dialog class="account-dialog" id="accountDialog" aria-labelledby="accountTitle">
+      <section class="account-panel">
+        <header class="account-header">
+          <div>
+            <p>Личный кабинет EDEN</p>
+            <h2 id="accountTitle">Мои заказы</h2>
+          </div>
+          <button class="dialog-close" id="closeAccount" type="button" aria-label="Закрыть личный кабинет">×</button>
+        </header>
+        <div class="account-body">
+          <section id="accountGuest">
+            <div class="account-mode-switch" role="tablist" aria-label="Вход или регистрация">
+              <button type="button" class="is-active" data-account-mode="login" role="tab" aria-selected="true">Войти</button>
+              <button type="button" data-account-mode="register" role="tab" aria-selected="false">Регистрация</button>
+            </div>
+            <p class="account-hint">Телефон и пароль сохранят ваши заказы в одном аккаунте.</p>
+            <form id="accountForm" class="account-form">
+              <label id="accountNameField" hidden>
+                <span>Имя</span>
+                <input name="name" type="text" maxlength="80" autocomplete="name" placeholder="Как к вам обращаться" />
+              </label>
+              <label>
+                <span>Номер телефона</span>
+                <input name="phone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required placeholder="+373 68 299 125" />
+              </label>
+              <label>
+                <span>Пароль</span>
+                <input name="password" type="password" minlength="8" maxlength="128" autocomplete="current-password" required placeholder="Не менее 8 символов" />
+              </label>
+              <p class="account-status" id="accountStatus" role="status" aria-live="polite"></p>
+              <button class="checkout-submit" id="accountSubmit" type="submit">Войти</button>
+            </form>
+          </section>
+          <section id="accountSignedIn" hidden>
+            <div class="account-profile">
+              <span class="account-avatar" aria-hidden="true">E</span>
+              <div><strong id="accountCustomerName"></strong><small id="accountCustomerPhone"></small></div>
+              <button id="accountLogout" class="account-logout" type="button">Выйти</button>
+            </div>
+            <p class="account-status" id="accountOrdersStatus" role="status" aria-live="polite"></p>
+            <div class="customer-order-tabs" role="tablist" aria-label="Заказы">
+              <button type="button" class="is-active" data-order-tab="current" role="tab" aria-selected="true">Текущие</button>
+              <button type="button" data-order-tab="history" role="tab" aria-selected="false">История</button>
+            </div>
+            <div id="customerCurrentOrders" class="customer-orders" role="tabpanel"></div>
+            <div id="customerOrderHistory" class="customer-orders" role="tabpanel" hidden></div>
+          </section>
+        </div>
+      </section>
+    </dialog>
+
     <dialog class="cart-dialog" id="cartDialog" aria-labelledby="cartTitle">
       <div class="cart-panel">
         <header class="cart-panel-header">
@@ -236,11 +288,11 @@
             <div class="checkout-grid">
               <label>
                 <span>Ваше имя</span>
-                <input name="customerName" type="text" maxlength="80" autocomplete="name" required placeholder="Как к вам обращаться" />
+                <input name="customerName" id="checkoutCustomerName" type="text" maxlength="80" autocomplete="name" readonly required placeholder="Войдите в аккаунт" />
               </label>
               <label>
                 <span>Номер телефона</span>
-                <input name="customerPhone" type="tel" maxlength="40" autocomplete="tel" inputmode="tel" required placeholder="Например, +373 68 299 125" />
+                <input name="customerPhone" id="checkoutCustomerPhone" type="tel" maxlength="40" autocomplete="tel" readonly required placeholder="Войдите в аккаунт" />
               </label>
               <label>
                 <span>Количество персон (палочек) — необязательно</span>
@@ -294,6 +346,6 @@
     <script src="extra-menu-data.js?v=street-20261006-promo-sets"></script>
     <script src="street-menu-data.js?v=street-199-search-20261005"></script>
     <script src="menu-search.js?v=street-199-search-20261005"></script>
-    <script src="app.js?v=street-20261006-promo-sets"></script>
+    <script src="app.js?v=customer-accounts-20261015"></script>
   </body>
 </html>
