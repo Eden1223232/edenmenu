@@ -570,7 +570,10 @@ function setAccountOrdersStatus(message, type = "") {
 function updateCheckoutIdentity() {
   if (checkoutCustomerName) checkoutCustomerName.value = customer?.name || "";
   if (checkoutCustomerPhone) checkoutCustomerPhone.value = customer?.phone || "";
-  if (accountButton) accountButton.textContent = customer ? "Мои заказы" : "Войти";
+  if (accountButton) {
+    accountButton.textContent = customer ? "Мои заказы" : "Войти / регистрация";
+    accountButton.setAttribute("aria-label", customer ? "Открыть мои заказы" : "Войти или зарегистрироваться");
+  }
 }
 
 function setAccountMode(mode) {
@@ -945,7 +948,7 @@ void loadCustomerAccount();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.js?v=customer-accounts-20261015", { updateViaCache: "none" })
+      .register("/sw.js?v=customer-accounts-mobile-auth-20261015", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */

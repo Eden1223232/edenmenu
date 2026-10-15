@@ -176,3 +176,108 @@ body { background: #090909; }
 .customer-orders-empty { padding:30px 16px; border:1px dashed #ffffff2b; border-radius:14px; color:var(--muted); font-size:13px; line-height:1.5; text-align:center; }
 .account-profile[hidden],#accountGuest[hidden],#accountSignedIn[hidden],.account-form label[hidden],.customer-orders[hidden] { display:none; }
 @media (max-width:760px) { .account-header-button { min-height:42px; padding:0 10px; font-size:11px; } .account-dialog { width:calc(100vw - 16px); max-height:92dvh; border-radius:18px; } .account-panel { max-height:92dvh; } .account-header { padding:14px 16px; } .account-body { padding:14px; } .customer-order-top { gap:7px; } .customer-order-status { max-width:52%; } }
+
+/* Keep the account entry visible beside the cart on narrow phone headers. */
+@media (max-width: 760px) {
+  .site-header {
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .site-header > .brand {
+    order: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    align-items: center;
+    gap: 2px;
+    font-size: clamp(19px, 5.4vw, 25px);
+  }
+
+  .site-header > .brand img {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+  }
+
+  .site-header > nav {
+    order: 4;
+    flex: 0 0 100%;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 1px;
+    scrollbar-width: none;
+  }
+
+  .site-header > nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-header > .cart-header-button,
+  .site-header > .account-header-button {
+    flex: 0 0 auto;
+  }
+
+  .site-header > .cart-header-button {
+    order: 2;
+    gap: 4px;
+    min-height: 40px;
+    padding-inline: 7px;
+    font-size: 11px;
+  }
+
+  .site-header > .cart-header-button .cart-count {
+    min-width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+
+  .site-header > .account-header-button {
+    order: 3;
+    width: fit-content;
+    max-width: 76px;
+    min-height: 40px;
+    padding: 2px 5px;
+    font-size: 10px;
+    line-height: 1.1;
+    white-space: normal;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+
+  .site-header > .brand {
+    font-size: 19px;
+  }
+
+  .site-header > .brand img {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+  }
+
+  .site-header > .cart-header-button {
+    padding-inline: 5px;
+    font-size: 10px;
+  }
+
+  .site-header > .cart-header-button .cart-count {
+    min-width: 20px;
+    height: 20px;
+  }
+
+  .site-header > .account-header-button {
+    max-width: 70px;
+    font-size: 9px;
+  }
+}
