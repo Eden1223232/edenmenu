@@ -107,6 +107,7 @@ if (garnishes) {
     ["Картофельные шарики", 3],
   ]);
   garnishes.items.forEach((item) => {
+    item.offerSnackSauces = true;
     const image = snackImages.get(item.name);
     if (image) {
       item.image = image;
@@ -155,6 +156,8 @@ const catalogById = new Map(
     category.items.map((item) => [item.catalogId, item]),
   ),
 );
+const snackSauceItems = (menuCategories.find((category) => category.id === "sauces")?.items || [])
+  .filter((item) => item.isSnackSauce);
 
 function readCart() {
   try {
@@ -402,7 +405,8 @@ function updateCartIndicators() {
 
 function renderCart() {
   const lines = cartLines();
-  cartItemsElement.innerHTML = lines
+  const availableSnackSauces = snackSauceItems.filter((item) => item.available);
+  const lineItemsMarkup = lines
     .map(
       ({ item, quantity }) => `
         <article class="cart-line">
@@ -415,6 +419,31 @@ function renderCart() {
         </article>`,
     )
     .join("");
+  const sauceAddonsMarkup =
+    lines.some(({ item }) => item.offerSnackSauces) && availableSnackSauces.length
+      ? `
+        <section class="cart-sauce-addons" aria-label="Соусы к гарнирам и закускам">
+          <div class="cart-sauce-heading">
+            <strong>Добавить соус к закуске?</strong>
+            <span>По желанию · порция 30 г</span>
+          </div>
+          <div class="cart-sauce-options">
+            ${availableSnackSauces
+              .map((item) => {
+                const quantity = cart[item.catalogId] || 0;
+                return `
+                  <button class="cart-sauce-option" type="button"
+                    data-cart-action="increase" data-item-id="${escapeHtml(item.catalogId)}"
+                    aria-label="Добавить ${escapeHtml(item.name)} за ${escapeHtml(formatPrice(item.priceKopecks))}">
+                    <span>${escapeHtml(item.name)}${quantity ? `<small>В корзине: ${quantity}</small>` : ""}</span>
+                    <b>+${escapeHtml(formatPrice(item.priceKopecks))}</b>
+                  </button>`;
+              })
+              .join("")}
+          </div>
+        </section>`
+      : "";
+  cartItemsElement.innerHTML = `${lineItemsMarkup}${sauceAddonsMarkup}`;
   cartEmptyElement.hidden = Boolean(lines.length);
   cartItemsElement.hidden = !lines.length;
   const summary = cartSummary();

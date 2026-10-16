@@ -116,8 +116,8 @@
       name: "Суши-бургер с лососем",
       price: "170 руб",
       meta: "1 шт.",
-      description: "Горячий суши-бургер с лососем.",
-      image: "assets/hot/sushi-burger-salmon.jpg",
+      description: "Состав: рис, сливочный сыр, огурец, авокадо, лосось. Снаружи панко.",
+      image: "assets/hot/sushi-burger-salmon-approved.png",
       imageFit: "cover",
       source: "",
     },
@@ -125,8 +125,8 @@
       name: "Суши-бургер с креветкой",
       price: "170 руб",
       meta: "1 шт.",
-      description: "Горячий суши-бургер с креветкой.",
-      image: "assets/hot/sushi-burger-shrimp.jpg",
+      description: "Состав: рис, сливочный сыр, огурец, авокадо, креветка. Снаружи панко.",
+      image: "assets/hot/sushi-burger-shrimp-approved.png",
       imageFit: "cover",
       source: "",
     },
@@ -134,8 +134,8 @@
       name: "Суши-бургер с чукой",
       price: "170 руб",
       meta: "1 шт.",
-      description: "Горячий суши-бургер с чукой.",
-      image: "assets/hot/sushi-burger-chuka.jpg",
+      description: "Состав: рис, сливочный сыр, огурец, авокадо, чука. Снаружи панко.",
+      image: "assets/hot/sushi-burger-chuka-approved.png",
       imageFit: "cover",
       source: "",
     },
@@ -175,6 +175,69 @@
   barCategories.forEach((category) => {
     if (!existingCategoryIds.has(category.id)) window.EDEN_MENU.push(category);
   });
+
+  const snackSauces = [
+    {
+      catalogId: "edenfood-sauces-005",
+      name: "Кетчуп (30 г)",
+      price: "10 руб",
+      meta: "",
+      description: "Кетчуп к закускам, порция 30 г. По желанию.",
+      image: "assets/sauces/ketchup.webp",
+      imageFit: "cover",
+      source: "",
+      isSnackSauce: true,
+    },
+    {
+      catalogId: "edenfood-sauces-006",
+      name: "Майонез (30 г)",
+      price: "10 руб",
+      meta: "",
+      description: "Майонез к закускам, порция 30 г. По желанию.",
+      image: "assets/sauces/mayonnaise.webp",
+      imageFit: "cover",
+      source: "",
+      isSnackSauce: true,
+    },
+    {
+      catalogId: "edenfood-sauces-007",
+      name: "Сырный соус (30 г)",
+      price: "10 руб",
+      meta: "",
+      description: "Сырный соус к закускам, порция 30 г. По желанию.",
+      image: "assets/sauces/cheese.webp",
+      imageFit: "cover",
+      source: "",
+      isSnackSauce: true,
+    },
+    {
+      catalogId: "edenfood-sauces-008",
+      name: "Сладкий брусничный соус (30 г)",
+      price: "15 руб",
+      meta: "",
+      description: "Сладкий брусничный соус к закускам, порция 30 г. По желанию.",
+      image: "assets/sauces/lingonberry.webp",
+      imageFit: "cover",
+      source: "",
+      isSnackSauce: true,
+    },
+    {
+      catalogId: "edenfood-sauces-009",
+      name: "Кисло-сладкий соус (30 г)",
+      price: "15 руб",
+      meta: "",
+      description: "Кисло-сладкий соус к закускам, порция 30 г. По желанию.",
+      image: "assets/sauces/sweet-sour.webp",
+      imageFit: "cover",
+      source: "",
+      isSnackSauce: true,
+    },
+  ];
+  const saucesCategory = window.EDEN_MENU.find((category) => category.id === "sauces");
+  if (saucesCategory) {
+    const existingSauceNames = new Set(saucesCategory.items.map((item) => item.name));
+    saucesCategory.items.unshift(...snackSauces.filter((item) => !existingSauceNames.has(item.name)));
+  }
 
   const hotCategory = window.EDEN_MENU.find((category) => category.id === "roll_vtemp");
   if (hotCategory) {

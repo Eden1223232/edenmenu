@@ -1,16 +1,16 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = `${CACHE_PREFIX}-shell-customer-accounts-mobile-auth-20261015`;
+const SHELL_CACHE = `${CACHE_PREFIX}-shell-sauce-menu-photos-20261016`;
 const SHELL_URLS = [
   "/",
   "/index.html",
-  "/styles.css?v=street-20261006-promo-sets",
+  "/styles.css?v=panko-burgers-snack-sauces-20261016",
   "/storefront.css?v=customer-accounts-mobile-auth-20261015",
   "/menu-search.css?v=street-199-search-20261005",
   "/menu-data.js?v=street-20261014-menu-descriptions-v1",
-  "/extra-menu-data.js?v=street-20261006-promo-sets",
+  "/extra-menu-data.js?v=sauce-menu-photos-20261016",
   "/street-menu-data.js?v=street-199-search-20261005",
   "/menu-search.js?v=street-199-search-20261005",
-  "/app.js?v=customer-accounts-mobile-auth-20261015",
+  "/app.js?v=panko-burgers-snack-sauces-20261016",
   "/assets/logo-eden.webp",
   "/assets/snacks/fries.webp",
   "/assets/snacks/cheese-sticks.webp",
