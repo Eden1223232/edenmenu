@@ -38,15 +38,15 @@ test('multiword ingredients, transliteration, English and keyboard mistakes',()=
 test('empty/nonsense query; exact numeric price; no duplicate results',()=>{
   assert.equal(search(categories,'').length,0);
   assert.equal(search(categories,'неизвестноещщблюдо').length,0);
-  const result=search(categories,'199');
+  const result=search(categories,'209');
   assert.ok(result.length>=7);
-  assert.ok(result.every(r=>/199/.test(r.item.price)));
+  assert.ok(result.every(r=>/209/.test(r.item.price)));
   assert.equal(new Set(result.map(r=>r.item)).size,result.length);
 });
-test('street rolls are sellable at 199; existing tube stays an addon at 50',()=>{
+test('street rolls are sellable at 209; existing tube stays an addon at 50',()=>{
   const street=categories.find(c=>c.id==='street_rolls');
   assert.equal(street.items.length,7);
-  for(const item of street.items){assert.equal(item.price,'199 руб');assert.equal(item.sellable,true);assert.ok(!item.enquiryOnly);}
+  for(const item of street.items){assert.equal(item.price,'209 руб');assert.equal(item.sellable,true);assert.ok(!item.enquiryOnly);}
   assert.match(categories.find(c=>c.id==='tubus').items[0].price,/50/);
 });
 test('sushi burger photos and labels match shrimp, salmon and chuka fillings',()=>{
@@ -58,15 +58,29 @@ test('sushi burger photos and labels match shrimp, salmon and chuka fillings',()
     ['Суши-бургер с чукой','assets/hot/sushi-burger-chuka-approved.png','Состав: рис, сливочный сыр, огурец, авокадо, чука. Снаружи панко.'],
   ]);
 });
-test('five optional snack sauces are visible with generated 30 g menu photos and correct prices',()=>{
+test('seven optional snack sauces are visible with correct portions and prices',()=>{
   const sauces=Array.from(categories.find(c=>c.id==='sauces').items).filter(item=>item.isSnackSauce);
   assert.equal(categories.find(c=>c.id==='sauces').label,'Соусы и добавки');
   assert.deepEqual(sauces.map(({catalogId,name,price,image})=>[catalogId,name,price,image]),[
     ['edenfood-sauces-005','Кетчуп (30 г)','10 руб','assets/sauces/ketchup.webp'],
     ['edenfood-sauces-006','Майонез (30 г)','10 руб','assets/sauces/mayonnaise.webp'],
-    ['edenfood-sauces-007','Сырный соус (30 г)','10 руб','assets/sauces/cheese.webp'],
+    ['edenfood-sauces-007','Сырный соус (30 г)','15 руб','assets/sauces/cheese.webp'],
     ['edenfood-sauces-008','Сладкий брусничный соус (30 г)','15 руб','assets/sauces/lingonberry.webp'],
     ['edenfood-sauces-009','Кисло-сладкий соус (30 г)','15 руб','assets/sauces/sweet-sour.webp'],
+    ['edenfood-sauces-010','Соус чили (30 г)','15 руб',''],
+    ['edenfood-sauces-011','Чесночный соус (30 г)','15 руб',''],
   ]);
-  for(const item of sauces) assert.ok(fs.existsSync(path.join(__dirname,'..',item.image)),`missing photo for ${item.name}`);
+  for(const item of sauces.filter(item=>item.image)) assert.ok(fs.existsSync(path.join(__dirname,'..',item.image)),`missing photo for ${item.name}`);
+});
+test('customer menu shows the requested prices for sets and fries',()=>{
+  const expected=new Map([
+    ['Сет без сырой рыбы','550 руб'],['Salmon box','570 руб'],['Нью-Йорк сет','450 руб'],
+    ['Сет 3 Филы','450 руб'],['Сет Лосось MAX','590 руб'],['Сет EDEN','1350 руб'],
+    ['Сет Гранд','450 руб'],['Картошка фри','50 руб'],
+  ]);
+  for(const [name,price] of expected){
+    const item=all.find(candidate=>candidate.name===name);
+    assert.ok(item,name);
+    assert.equal(item.price,price,name);
+  }
 });
