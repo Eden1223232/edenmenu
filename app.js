@@ -862,7 +862,7 @@ async function submitOrder(event) {
 async function syncCatalog() {
   try {
     const response = await fetchWithTimeout(
-      `${apiBase}/api/public-menu?v=street-199-20261005`,
+      `${apiBase}/api/public-menu?v=price-update-20261017`,
       { headers: { Accept: "application/json" } },
       8000,
     );

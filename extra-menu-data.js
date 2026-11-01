@@ -2,6 +2,22 @@
   if (!Array.isArray(window.EDEN_MENU)) window.EDEN_MENU = [];
 
   const existingCategoryIds = new Set(window.EDEN_MENU.map((category) => category.id));
+  const requestedPrices = new Map([
+    ["Сет без сырой рыбы", "550 руб"],
+    ["Salmon box", "570 руб"],
+    ["Нью-Йорк сет", "450 руб"],
+    ["Сет 3 Филы", "450 руб"],
+    ["Сет Лосось MAX", "590 руб"],
+    ["Сет EDEN", "1350 руб"],
+    ["Сет Гранд", "450 руб"],
+    ["Картошка фри", "50 руб"],
+  ]);
+  window.EDEN_MENU.forEach((category) =>
+    category.items.forEach((item) => {
+      const price = requestedPrices.get(item.name);
+      if (price) item.price = price;
+    }),
+  );
   const authorTea = (slug, name, description) =>
     [
       { volume: "700 мл", suffix: "700", price: "55 руб" },
@@ -42,10 +58,10 @@
       ],
       items: [
         { name: "Лимонад классический", price: "45 руб", group: "lemonades" },
-        { name: "Мохито манго", price: "45 руб", group: "lemonades" },
+        { name: "Мохито манго", price: "50 руб", group: "lemonades" },
         { name: "Мохито вишня", price: "45 руб", group: "lemonades" },
-        { name: "Манго Маракуйя", price: "45 руб", group: "lemonades" },
-        { name: "Манго апельсин", price: "45 руб", group: "lemonades" },
+        { name: "Манго Маракуйя", price: "50 руб", group: "lemonades" },
+        { name: "Манго апельсин", price: "50 руб", group: "lemonades" },
         { name: "Малина-мята", price: "45 руб", group: "lemonades" },
         { name: "Бамбл кофе", price: "45 руб", group: "lemonades" },
         { name: "Мохито", price: "45 руб", group: "lemonades" },
@@ -74,10 +90,10 @@
         { name: "Эспрессо", price: "20 руб", meta: "", description: "Классический насыщенный эспрессо.", image: "", source: "" },
         { name: "Двойной эспрессо", price: "35 руб", meta: "", description: "Двойная порция классического эспрессо.", image: "", source: "" },
         { name: "Американо", price: "20 руб", meta: "", description: "Эспрессо с горячей водой.", image: "", source: "" },
-        { name: "Флэт уайт", price: "35 руб", meta: "", description: "Кофе с бархатистым молоком и насыщенным вкусом.", image: "", source: "" },
+        { name: "Флэт уайт", price: "45 руб", meta: "", description: "Кофе с бархатистым молоком и насыщенным вкусом.", image: "", source: "" },
         { name: "Капучино", price: "30 руб", meta: "", description: "Эспрессо с молоком и плотной молочной пеной.", image: "", source: "" },
         { name: "Латте", price: "33 руб", meta: "", description: "Мягкий кофейный напиток с молоком.", image: "", source: "" },
-        { name: "Какао", price: "23 руб", meta: "", description: "Горячий какао-напиток с молоком.", image: "", source: "" },
+        { name: "Какао", price: "25 руб", meta: "", description: "Горячий какао-напиток с молоком.", image: "", source: "" },
         { name: "Стиммер", price: "29 руб", meta: "", description: "Горячий молочный напиток с нежной пеной.", image: "", source: "" },
         { name: "Горячий шоколад", price: "35 руб", meta: "", description: "Густой горячий шоколад.", image: "", source: "" },
         { name: "Айс латте", price: "45 руб", meta: "", description: "Охлаждённый кофе с молоком и льдом.", image: "", source: "" },
@@ -114,7 +130,7 @@
   const hotItems = [
     {
       name: "Суши-бургер с лососем",
-      price: "170 руб",
+      price: "180 руб",
       meta: "1 шт.",
       description: "Состав: рис, сливочный сыр, огурец, авокадо, лосось. Снаружи панко.",
       image: "assets/hot/sushi-burger-salmon-approved.png",
@@ -123,7 +139,7 @@
     },
     {
       name: "Суши-бургер с креветкой",
-      price: "170 руб",
+      price: "180 руб",
       meta: "1 шт.",
       description: "Состав: рис, сливочный сыр, огурец, авокадо, креветка. Снаружи панко.",
       image: "assets/hot/sushi-burger-shrimp-approved.png",
@@ -132,7 +148,7 @@
     },
     {
       name: "Суши-бургер с чукой",
-      price: "170 руб",
+      price: "180 руб",
       meta: "1 шт.",
       description: "Состав: рис, сливочный сыр, огурец, авокадо, чука. Снаружи панко.",
       image: "assets/hot/sushi-burger-chuka-approved.png",
@@ -141,7 +157,7 @@
     },
     {
       name: "Суши-хот-дог с лососем",
-      price: "170 руб",
+      price: "180 руб",
       meta: "1 шт.",
       description: "Горячий суши-хот-дог с лососем.",
       image: "assets/hot/sushi-hotdog-salmon.jpg",
@@ -150,7 +166,7 @@
     },
     {
       name: "Суши-хот-дог с угрём",
-      price: "170 руб",
+      price: "180 руб",
       meta: "1 шт.",
       description: "Горячий суши-хот-дог с угрём.",
       image: "assets/hot/sushi-hotdog-eel.jpg",
@@ -159,7 +175,7 @@
     },
     {
       name: "Суши-хот-дог с креветкой",
-      price: "170 руб",
+      price: "180 руб",
       meta: "1 шт.",
       description: "Горячий суши-хот-дог с креветкой.",
       image: "assets/hot/sushi-hotdog-shrimp.jpg",
@@ -202,7 +218,7 @@
     {
       catalogId: "edenfood-sauces-007",
       name: "Сырный соус (30 г)",
-      price: "10 руб",
+      price: "15 руб",
       meta: "",
       description: "Сырный соус к закускам, порция 30 г. По желанию.",
       image: "assets/sauces/cheese.webp",
@@ -232,6 +248,26 @@
       source: "",
       isSnackSauce: true,
     },
+    {
+      catalogId: "edenfood-sauces-010",
+      name: "Соус чили (30 г)",
+      price: "15 руб",
+      meta: "",
+      description: "Соус чили к закускам, порция 30 г. По желанию.",
+      image: "",
+      source: "",
+      isSnackSauce: true,
+    },
+    {
+      catalogId: "edenfood-sauces-011",
+      name: "Чесночный соус (30 г)",
+      price: "15 руб",
+      meta: "",
+      description: "Чесночный соус к закускам, порция 30 г. По желанию.",
+      image: "",
+      source: "",
+      isSnackSauce: true,
+    },
   ];
   const saucesCategory = window.EDEN_MENU.find((category) => category.id === "sauces");
   if (saucesCategory) {
@@ -253,8 +289,8 @@
       setsCategory.items.push({
         catalogId: "edenfood-seti-montana",
         name: "Сет МОНТАНА",
-        price: "550 руб",
-        originalPriceKopecks: 62000,
+        price: "570 руб",
+        originalPriceKopecks: 64000,
         meta: "32 шт. · 1000 г.",
         description: "Состав: Филадельфия — рис, сыр, лосось; двойная креветка — рис, сыр, креветка, креветка в темпуре, огурец, трюфельный соус, икра тобико, нори; ролл с жареным лососем в огурце — рис, сыр, жареный лосось, авокадо, огурец, терияки, кунжут, нори; ролл с тунцом татаки — рис, сыр, авокадо, салат айсберг, тунец, терияки, ореховый соус, нори. Вес: 1000 г.",
         image: "assets/sets/montana.jpg",
@@ -265,8 +301,8 @@
       setsCategory.items.push({
         catalogId: "edenfood-seti-khrust",
         name: "Хруст сет",
-        price: "420 руб",
-        originalPriceKopecks: 45000,
+        price: "440 руб",
+        originalPriceKopecks: 47000,
         meta: "700 г.",
         description: "Состав: темпура с креветкой и авокадо — рис, сыр, креветка, салат айсберг, бекон, спайси, терияки, кунжут, темпура, нори; темпура с жареным лососем и авокадо — рис, сыр, жареный лосось, авокадо, соус терияки, темпура, кунжут, нори; темпура с угрем — рис, сыр, угорь, огурец, икра тобико, соус терияки, темпура, кунжут, нори. Вес: 700 г. Роллы в темпуре не сохраняют тепло при доставке. Мы готовим их в последний момент, но в пути они остывают. Спасибо за понимание!",
         image: "assets/sets/khrust.jpg",
