@@ -10,7 +10,7 @@
     />
     <link rel="preconnect" href="https://ucrabs.by" />
     <link rel="stylesheet" href="styles.css?v=panko-burgers-snack-sauces-20261016" />
-    <link rel="stylesheet" href="storefront.css?v=new-roll-badge-20261104" />
+    <link rel="stylesheet" href="storefront.css?v=homepage-new-arrivals-20261104" />
     <link rel="stylesheet" href="menu-search.css?v=street-199-search-20261005" />
   </head>
   <body>
@@ -50,6 +50,29 @@
           <a class="primary-action" href="#categories">Выбрать что-нибудь вкусное <span aria-hidden="true">↗</span></a>
         </div>
         <a class="hero-street-link" href="#menu" data-select-category="street_rolls"><span>Попробуй новое</span><strong>Стрит-роллы в тубусе →</strong></a>
+      </section>
+
+      <section class="new-arrivals" id="newArrivals" aria-labelledby="newArrivalsTitle" hidden>
+        <div class="new-arrivals-heading">
+          <div>
+            <p class="eyebrow">Свежие идеи EDEN</p>
+            <h2 id="newArrivalsTitle">Новинки меню</h2>
+            <p class="new-arrivals-subtitle">Листайте новинки или добавьте понравившееся прямо отсюда.</p>
+          </div>
+          <div class="new-arrivals-controls" aria-label="Управление новинками">
+            <button type="button" data-new-arrivals-previous aria-label="Предыдущая новинка">←</button>
+            <button type="button" data-new-arrivals-toggle aria-pressed="false" aria-label="Приостановить автопрокрутку">Ⅱ Пауза</button>
+            <button type="button" data-new-arrivals-next aria-label="Следующая новинка">→</button>
+          </div>
+        </div>
+        <div class="new-arrivals-viewport" id="newArrivalsViewport">
+          <div class="new-arrivals-track" id="newArrivalsTrack"></div>
+        </div>
+        <div class="new-arrivals-footer">
+          <div class="new-arrivals-dots" id="newArrivalsDots" role="group" aria-label="Выбрать новинку"></div>
+          <span>Листайте влево и вправо</span>
+        </div>
+        <p class="new-arrivals-status" id="newArrivalsStatus" role="status" aria-live="polite"></p>
       </section>
 
       <section class="category-showcase" id="categories" aria-labelledby="categories-title">
@@ -346,6 +369,6 @@
     <script src="extra-menu-data.js?v=mognu-uramaki-20261104-v2"></script>
     <script src="street-menu-data.js?v=menu-prices-20261031-v1"></script>
     <script src="menu-search.js?v=street-199-search-20261005"></script>
-    <script src="app.js?v=new-roll-badge-20261104"></script>
+    <script src="app.js?v=homepage-new-arrivals-20261104"></script>
   </body>
 </html>
