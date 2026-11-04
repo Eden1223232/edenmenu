@@ -1,4 +1,8 @@
 const menuGrid = document.querySelector("#menuGrid");
+const newArrivalsSection = document.querySelector("#newArrivals");
+const newArrivalsTrack = document.querySelector("#newArrivalsTrack");
+const newArrivalsDots = document.querySelector("#newArrivalsDots");
+const newArrivalsStatus = document.querySelector("#newArrivalsStatus");
 const filters = document.querySelector("#filters");
 const menuSearch = document.querySelector("#menuSearch");
 const cartDialog = document.querySelector("#cartDialog");
@@ -158,6 +162,12 @@ const catalogById = new Map(
 );
 const snackSauceItems = (menuCategories.find((category) => category.id === "sauces")?.items || [])
   .filter((item) => item.isSnackSauce);
+let currentNewArrival = 0;
+let newArrivalsPaused = false;
+let newArrivalsHovering = false;
+let newArrivalsFocused = false;
+let newArrivalsTimer = 0;
+let newArrivalItems = [];
 
 function readCart() {
   try {
@@ -460,6 +470,7 @@ function changeQuantity(id, delta) {
   else delete cart[id];
   persistCart();
   renderMenu();
+  renderNewArrivals();
   renderCart();
   if (productDialog?.open) renderProductDetail();
 }
@@ -512,6 +523,109 @@ function renderCategoryTiles() {
       ${category.id === "street_rolls" ? '<span class="new-tag">НОВИНКА</span>' : ''}</a>`;
   }).join("");
   tiles.querySelectorAll("img").forEach((image) => image.addEventListener("error", () => image.remove(), { once: true }));
+}
+
+function reducedMotionRequested() {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || false;
+}
+
+function stopNewArrivalsTimer() {
+  window.clearInterval(newArrivalsTimer);
+  newArrivalsTimer = 0;
+}
+
+function updateNewArrivalsTimer() {
+  stopNewArrivalsTimer();
+  if (
+    newArrivalItems.length < 2 ||
+    newArrivalsPaused ||
+    newArrivalsHovering ||
+    newArrivalsFocused ||
+    document.hidden ||
+    reducedMotionRequested()
+  ) return;
+  newArrivalsTimer = window.setInterval(() => {
+    setNewArrival(currentNewArrival + 1);
+  }, 5600);
+}
+
+function setNewArrival(index, announce = false) {
+  if (!newArrivalItems.length) return;
+  currentNewArrival = (index + newArrivalItems.length) % newArrivalItems.length;
+  newArrivalsTrack.style.transform = `translateX(-${currentNewArrival * 100}%)`;
+  newArrivalsTrack.querySelectorAll(".new-arrival-slide").forEach((slide, slideIndex) => {
+    const active = slideIndex === currentNewArrival;
+    slide.setAttribute("aria-hidden", String(!active));
+    slide.inert = !active;
+  });
+  newArrivalsDots.querySelectorAll("button").forEach((dot, dotIndex) => {
+    const active = dotIndex === currentNewArrival;
+    dot.classList.toggle("is-active", active);
+    dot.setAttribute("aria-current", active ? "true" : "false");
+  });
+  if (announce) {
+    newArrivalsStatus.textContent = `Новинка ${currentNewArrival + 1} из ${newArrivalItems.length}: ${newArrivalItems[currentNewArrival].name}`;
+  }
+}
+
+function renderNewArrivals() {
+  const focusedControl = newArrivalsTrack.contains(document.activeElement)
+    ? {
+        action: document.activeElement.dataset.cartAction,
+        itemId: document.activeElement.dataset.itemId,
+        productId: document.activeElement.dataset.productId,
+      }
+    : null;
+  newArrivalItems = [...catalogById.values()].filter((item) => item.isNew && item.available);
+  newArrivalsSection.hidden = newArrivalItems.length === 0;
+  stopNewArrivalsTimer();
+  if (!newArrivalItems.length) return;
+  currentNewArrival = Math.min(currentNewArrival, newArrivalItems.length - 1);
+  newArrivalsTrack.innerHTML = newArrivalItems.map((item, index) => `
+    <article class="new-arrival-slide" aria-label="Новинка ${index + 1} из ${newArrivalItems.length}" aria-hidden="true" inert>
+      <button class="new-arrival-photo" type="button" data-product-id="${escapeHtml(item.catalogId)}" aria-label="Посмотреть ${escapeHtml(item.name)}">
+        ${item.image
+          ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`
+          : `<span class="new-arrival-placeholder" aria-hidden="true">EDEN</span>`}
+        <span class="new-arrival-badge">Новинка</span>
+        <span class="new-arrival-photo-hint">Смотреть состав <span aria-hidden="true">↗</span></span>
+      </button>
+      <div class="new-arrival-copy">
+        <p class="eyebrow">Попробуйте первым</p>
+        <h3><button type="button" data-product-id="${escapeHtml(item.catalogId)}">${escapeHtml(item.name)}</button></h3>
+        ${item.meta ? `<span class="new-arrival-meta">${escapeHtml(item.meta)}</span>` : ""}
+        <p class="new-arrival-description">${escapeHtml(item.description || "Новинка меню EDEN.")}</p>
+        <div class="new-arrival-purchase">
+          <strong>${escapeHtml(item.price)}</strong>
+          ${item.originalPriceKopecks ? `<s>${escapeHtml(formatPrice(item.originalPriceKopecks))}</s>` : ""}
+          ${quantityControlMarkup(item)}
+        </div>
+      </div>
+    </article>`).join("");
+  newArrivalsDots.innerHTML = newArrivalItems.map((item, index) =>
+    `<button type="button" aria-label="Показать новинку ${index + 1}: ${escapeHtml(item.name)}" aria-current="false" data-new-arrival-index="${index}"></button>`,
+  ).join("");
+  newArrivalsTrack.querySelectorAll("img").forEach((image) => image.addEventListener("error", () => {
+    const placeholder = document.createElement("span");
+    placeholder.className = "new-arrival-placeholder";
+    placeholder.textContent = "EDEN";
+    image.replaceWith(placeholder);
+  }, { once: true }));
+  const toggle = newArrivalsSection.querySelector("[data-new-arrivals-toggle]");
+  toggle.disabled = reducedMotionRequested();
+  toggle.textContent = reducedMotionRequested() ? "Без анимации" : newArrivalsPaused ? "▶ Продолжить" : "Ⅱ Пауза";
+  toggle.setAttribute("aria-label", reducedMotionRequested()
+    ? "Автопрокрутка отключена настройкой уменьшения движения"
+    : newArrivalsPaused ? "Продолжить автопрокрутку" : "Приостановить автопрокрутку");
+  setNewArrival(currentNewArrival);
+  if (focusedControl) {
+    const replacement = [...newArrivalsTrack.querySelectorAll("button")].find((button) =>
+      (focusedControl.action && button.dataset.cartAction === focusedControl.action && button.dataset.itemId === focusedControl.itemId) ||
+      (focusedControl.productId && button.dataset.productId === focusedControl.productId),
+    );
+    replacement?.focus({ preventScroll: true });
+  }
+  updateNewArrivalsTimer();
 }
 
 function renderProductDetail() {
@@ -884,6 +998,7 @@ async function syncCatalog() {
     });
     persistCart();
     renderMenu();
+    renderNewArrivals();
     renderCart();
     if (productDialog?.open) renderProductDetail();
   } catch {
@@ -894,6 +1009,7 @@ async function syncCatalog() {
 renderFilters();
 renderCategoryTiles();
 renderMenu();
+renderNewArrivals();
 renderCart();
 updateDeliveryFields();
 void syncCatalog();
@@ -906,6 +1022,71 @@ menuGrid.addEventListener("click", handleCartAction);
 menuGrid.addEventListener("click", (event) => {
   const button = event.target.closest("[data-product-id]");
   if (button) openProduct(button.dataset.productId);
+});
+newArrivalsTrack.addEventListener("click", handleCartAction);
+newArrivalsTrack.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-product-id]");
+  if (button) openProduct(button.dataset.productId);
+});
+newArrivalsSection.querySelector("[data-new-arrivals-previous]").addEventListener("click", () => {
+  setNewArrival(currentNewArrival - 1, true);
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.querySelector("[data-new-arrivals-next]").addEventListener("click", () => {
+  setNewArrival(currentNewArrival + 1, true);
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.querySelector("[data-new-arrivals-toggle]").addEventListener("click", (event) => {
+  newArrivalsPaused = !newArrivalsPaused;
+  const button = event.currentTarget;
+  button.textContent = newArrivalsPaused ? "▶ Продолжить" : "Ⅱ Пауза";
+  button.setAttribute("aria-pressed", String(newArrivalsPaused));
+  button.setAttribute("aria-label", newArrivalsPaused ? "Продолжить автопрокрутку" : "Приостановить автопрокрутку");
+  updateNewArrivalsTimer();
+});
+newArrivalsDots.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-new-arrival-index]");
+  if (!button) return;
+  setNewArrival(Number(button.dataset.newArrivalIndex), true);
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.addEventListener("mouseenter", () => {
+  newArrivalsHovering = true;
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.addEventListener("mouseleave", () => {
+  newArrivalsHovering = false;
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.addEventListener("focusin", () => {
+  newArrivalsFocused = true;
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.addEventListener("focusout", () => {
+  window.setTimeout(() => {
+    newArrivalsFocused = newArrivalsSection.contains(document.activeElement);
+    updateNewArrivalsTimer();
+  }, 0);
+});
+let newArrivalPointerStart = null;
+newArrivalsSection.querySelector("#newArrivalsViewport").addEventListener("pointerdown", (event) => {
+  if (event.pointerType !== "touch") return;
+  newArrivalPointerStart = event.clientX;
+  newArrivalsHovering = true;
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.querySelector("#newArrivalsViewport").addEventListener("pointerup", (event) => {
+  if (newArrivalPointerStart === null) return;
+  const distance = event.clientX - newArrivalPointerStart;
+  newArrivalPointerStart = null;
+  if (Math.abs(distance) > 45) setNewArrival(currentNewArrival + (distance < 0 ? 1 : -1), true);
+  newArrivalsHovering = false;
+  updateNewArrivalsTimer();
+});
+newArrivalsSection.querySelector("#newArrivalsViewport").addEventListener("pointercancel", () => {
+  newArrivalPointerStart = null;
+  newArrivalsHovering = false;
+  updateNewArrivalsTimer();
 });
 document.addEventListener("click", (event) => {
   const link = event.target.closest("[data-select-category]");
@@ -969,6 +1150,7 @@ document.querySelectorAll("[data-order-tab]").forEach((button) => {
 });
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden && customer) void refreshCustomerOrders();
+  updateNewArrivalsTimer();
 });
 window.setInterval(() => {
   if (!document.hidden && customer) void refreshCustomerOrders();
@@ -978,7 +1160,7 @@ void loadCustomerAccount();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.js?v=customer-accounts-mobile-auth-20261015", { updateViaCache: "none" })
+              .register("/sw.js?v=homepage-new-arrivals-20261104", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */
