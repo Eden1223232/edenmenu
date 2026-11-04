@@ -309,6 +309,67 @@
         source: "",
       });
     }
+    if (!setsCategory.items.some((item) => item.catalogId === "edenfood-seti-mognu")) {
+      setsCategory.items.push({
+        catalogId: "edenfood-seti-mognu",
+        name: "СЕТ МОГНУ",
+        price: "699 руб",
+        meta: "40 шт.",
+        description: "Состав: Филадельфия классическая, Филадельфия с авокадо, Филадельфия татаки, ролл Канада, Черный дракон.",
+        image: "assets/sets/mognu.png",
+        source: "",
+        isNew: true,
+      });
+    }
+  }
+
+  const uramakiCategory = window.EDEN_MENU.find((category) => category.id === "urumaki");
+  if (uramakiCategory) {
+    const tunaTataki = uramakiCategory.items.find((item) => item.catalogId === "edenfood-urumaki-031" || item.name === "Тунец татаки");
+    if (!tunaTataki) uramakiCategory.items.push({
+      catalogId: "edenfood-urumaki-031",
+      name: "Тунец татаки",
+      price: "159 руб",
+      meta: "8 шт.",
+      description: "Состав: рис, сыр, огурец, авокадо, тунец татаки. Вес: 320 г.",
+      image: "assets/rolls/tuna-tataki.png",
+      source: "",
+      isNew: true,
+    });
+
+    const doubleShrimp = uramakiCategory.items.find((item) => item.catalogId === "edenfood-urumaki-032" || item.name === "Двойная креветка");
+    if (!doubleShrimp) uramakiCategory.items.push({
+      catalogId: "edenfood-urumaki-032",
+      name: "Двойная креветка",
+      price: "169 руб",
+      meta: "8 шт.",
+      description: "Состав: рис, сыр, огурец, креветка в панировке внутри, креветка сверху.",
+      image: "assets/rolls/double-shrimp.png",
+      source: "",
+      isNew: true,
+    });
+
+    const mangoPhiladelphia = uramakiCategory.items.find((item) => item.catalogId === "edenfood-urumaki-029" || item.name === "Филадельфия татаки с креветкой в темпуре" || item.name === "Филадельфия татаки с манго");
+    if (mangoPhiladelphia) Object.assign(mangoPhiladelphia, {
+      catalogId: "edenfood-urumaki-029",
+      name: "Филадельфия татаки с манго",
+      price: "159 руб",
+      meta: "8 шт.",
+      description: "Состав: рис, сыр, креветка, манго, лосось татаки. Вес: 325 г.",
+      image: "assets/rolls/philadelphia-tataki-mango.png",
+      source: "",
+      isNew: true,
+    });
+    else uramakiCategory.items.push({
+      catalogId: "edenfood-urumaki-029",
+      name: "Филадельфия татаки с манго",
+      price: "159 руб",
+      meta: "8 шт.",
+      description: "Состав: рис, сыр, креветка, манго, лосось татаки. Вес: 325 г.",
+      image: "assets/rolls/philadelphia-tataki-mango.png",
+      source: "",
+      isNew: true,
+    });
   }
 
   const bigFila = window.EDEN_MENU

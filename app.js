@@ -254,8 +254,9 @@ function itemCard(item) {
   const imageMarkup = item.image
     ? `<img class="${imageClass}" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">`
     : `<div class="item-image item-image-placeholder" aria-hidden="true"><span>${escapeHtml(item.name)}</span></div>`;
+  const newBadge = item.isNew ? '<span class="item-new-badge">Новинка!</span>' : "";
   article.innerHTML = `
-    <button class="product-image-button" type="button" data-product-id="${escapeHtml(item.catalogId)}" aria-label="Фото и состав: ${escapeHtml(item.name)}">${imageMarkup}<span class="image-expand" aria-hidden="true">↗</span></button>
+    <button class="product-image-button" type="button" data-product-id="${escapeHtml(item.catalogId)}" aria-label="Фото и состав: ${escapeHtml(item.name)}">${imageMarkup}${newBadge}<span class="image-expand" aria-hidden="true">↗</span></button>
     <div class="item-body">
       <div class="item-top">
         <h4><button class="product-name-button" type="button" data-product-id="${escapeHtml(item.catalogId)}">${escapeHtml(item.name)}</button></h4>
@@ -516,7 +517,7 @@ function renderCategoryTiles() {
 function renderProductDetail() {
   const item = catalogById.get(selectedProductId);
   if (!item) return;
-  productDetail.innerHTML = `<div class="product-detail-photo">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : '<span>EDENFOOD</span>'}</div>
+  productDetail.innerHTML = `<div class="product-detail-photo">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">` : '<span>EDENFOOD</span>'}${item.isNew ? '<span class="item-new-badge">Новинка!</span>' : ''}</div>
     <div class="product-detail-copy"><p class="eyebrow">Меню EDEN</p><h2 id="productTitle">${escapeHtml(item.name)}</h2>
       <p>${escapeHtml(item.description || "Состав уточните у администратора.")}</p>
       <small>${escapeHtml(item.meta || "")}</small>
