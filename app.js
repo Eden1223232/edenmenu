@@ -137,6 +137,7 @@ const featuredCategoryOrder = [
   "roll_vtemp",
   "desserts",
   "garnishes",
+  "soups",
   "miniroll",
   "cold_drinks",
   "coffee",

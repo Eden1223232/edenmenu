@@ -83,6 +83,23 @@
         },
       ],
     },
+  {
+    id: "soups",
+    label: "Супы",
+    items: [
+      {
+        catalogId: "92887f82-2607-491f-8f4b-73e4fd5c317d",
+        name: "ТОМ ЯМ",
+        price: "Цена уточняется",
+        meta: "524 г",
+        description: "Состав: креветки, шампиньоны, помидоры черри, паста Том Ям, кокосовое молоко, сливки, вода, кунжут и микрозелень. Вес до уваривания: 524 г.",
+        image: "assets/soups/tom-yam.jpg",
+        imageFit: "cover",
+        source: "",
+        sellable: false,
+      },
+    ],
+  },
     {
       id: "coffee",
       label: "Кофейные напитки",
