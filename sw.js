@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = `${CACHE_PREFIX}-shell-tom-yam-20261106-v1`;
+const SHELL_CACHE = `${CACHE_PREFIX}-shell-tom-yam-arrivals-20261108-v1`;
 const SHELL_URLS = [
   "/",
   "/index.html",
@@ -7,10 +7,10 @@ const SHELL_URLS = [
   "/storefront.css?v=homepage-new-arrivals-20261104",
   "/menu-search.css?v=street-199-search-20261005",
   "/menu-data.js?v=menu-prices-20261031-v1",
-  "/extra-menu-data.js?v=tom-yam-20261106-v1",
+  "/extra-menu-data.js?v=tom-yam-arrivals-20261108-v1",
   "/street-menu-data.js?v=menu-prices-20261031-v1",
   "/menu-search.js?v=street-199-search-20261005",
-  "/app.js?v=tom-yam-20261106-v1",
+  "/app.js?v=tom-yam-arrivals-20261108-v1",
   "/assets/logo-eden.webp",
   "/assets/snacks/fries.webp",
   "/assets/snacks/cheese-sticks.webp",
