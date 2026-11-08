@@ -96,7 +96,7 @@
         image: "assets/soups/tom-yam.jpg",
         imageFit: "cover",
         source: "",
-        sellable: false,
+        sellable: false, isNew: true, showInNewArrivals: true,
       },
     ],
   },

@@ -577,7 +577,7 @@ function renderNewArrivals() {
         productId: document.activeElement.dataset.productId,
       }
     : null;
-  newArrivalItems = [...catalogById.values()].filter((item) => item.isNew && item.available);
+  newArrivalItems = [...catalogById.values()].filter((item) => item.isNew && (item.available || item.showInNewArrivals));
   newArrivalsSection.hidden = newArrivalItems.length === 0;
   stopNewArrivalsTimer();
   if (!newArrivalItems.length) return;
