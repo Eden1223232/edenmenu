@@ -5,10 +5,6 @@ body { background: #090909; }
 .brand img { border-radius: 50%; margin-right: 9px; }
 .site-header nav a { border: 0; font-size: 14px; }
 .site-header nav .nav-menu { background: var(--red); color: white; font-weight: 800; padding: 0 22px; border-radius: 12px; }
-.giveaway-announcement { margin: 0; padding: 11px clamp(16px, 4vw, 60px); border-radius: 0; background: #171414; }
-.giveaway-announcement-copy strong { font-size: 14px; }
-.giveaway-announcement-copy small { font-size: 10px; }
-.giveaway-announcement-action { font-size: 12px; }
 .menu-hero { position: relative; overflow: hidden; isolation: isolate; margin: 24px auto 0; width: calc(100% - clamp(32px,8vw,120px)); max-width: 1600px; min-height: 380px; border-radius: 26px; background: #171313; }
 .menu-hero-photo { position: absolute; z-index: -2; width: 72%; height: 100%; right: 0; top: 0; object-fit: cover; object-position: center; }
 .menu-hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg,#141212 2%,rgba(20,18,18,.96) 27%,rgba(20,18,18,.3) 65%,rgba(0,0,0,.06)); }
@@ -82,7 +78,7 @@ body { background: #090909; }
 .image-note { display:block; font-size:11px; line-height:1.5; margin-top:20px; }
 :focus-visible { outline:3px solid var(--gold); outline-offset:4px; }
 @media (max-width:1100px) {
-  .site-header nav a:not(.nav-menu):not(.giveaway-nav) { display:none; }
+  .site-header nav a:not(.nav-menu) { display:none; }
   .category-tiles { grid-template-columns:repeat(3,minmax(0,1fr)); }
   .category-tile { min-height:160px; }
   .menu-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -94,9 +90,6 @@ body { background: #090909; }
   .brand img { width:36px; height:36px; margin-right:6px; }
   .site-header nav { display:none; }
   .cart-header-button { min-height:42px; padding:0 12px; font-size:12px; }
-  .giveaway-announcement { padding:10px 15px; }
-  .giveaway-announcement-action { display:none; }
-  .giveaway-announcement-copy strong { font-size:12px; }
   .menu-hero { width:calc(100% - 24px); margin-top:12px; min-height:410px; border-radius:20px; }
   .menu-hero-photo { width:100%; height:100%; object-position:63% center; opacity:.7; }
   .menu-hero::after { background:linear-gradient(90deg,#0e0c0cee,#0e0c0c22),linear-gradient(0deg,#0e0c0c 0%,transparent 70%); }

@@ -1,10 +1,10 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = `${CACHE_PREFIX}-shell-tom-yam-price-130-20261108-v1`;
+const SHELL_CACHE = "edenfood-site-shell-raffle-closed-20261110-v1";
 const SHELL_URLS = [
   "/",
   "/index.html",
-  "/styles.css?v=panko-burgers-snack-sauces-20261016",
-  "/storefront.css?v=homepage-new-arrivals-20261104",
+  "/styles.css?v=raffle-closed-20261110",
+  "/storefront.css?v=raffle-closed-20261110",
   "/menu-search.css?v=street-199-search-20261005",
   "/menu-data.js?v=menu-prices-20261031-v1",
   "/extra-menu-data.js?v=tom-yam-price-130-20261108-v1",
