@@ -1015,6 +1015,59 @@ renderCart();
 updateDeliveryFields();
 void syncCatalog();
 
+const mercedesProgressElements = {
+  count: document.querySelector('#mercedesPaidCount'),
+  announcement: document.querySelector('#mercedesAnnouncementCount'),
+  fill: document.querySelector('#mercedesProgressFill'),
+  meter: document.querySelector('#mercedesProgressMeter'),
+  status: document.querySelector('#mercedesProgressStatus'),
+  orderButton: document.querySelector('#mercedesOrderButton'),
+  announcementLink: document.querySelector('.mercedes-announcement'),
+};
+
+async function refreshMercedesRaffle() {
+  if (!mercedesProgressElements.count) return;
+  try {
+    const response = await fetchWithTimeout(`${apiBase}/api/mercedes-raffle`, {}, 6500);
+    if (!response.ok) throw new Error('raffle unavailable');
+    const raffle = await response.json();
+    const total = 50;
+    const count = Math.min(total, Math.max(0, Number(raffle.paidCount) || 0));
+    mercedesProgressElements.count.textContent = String(count);
+    mercedesProgressElements.announcement.textContent = String(count);
+    mercedesProgressElements.fill.style.width = `${count / total * 100}%`;
+    mercedesProgressElements.meter.setAttribute('aria-valuenow', String(count));
+    mercedesProgressElements.announcementLink?.setAttribute('aria-label', `Розыгрыш Mercedes, ${count} из ${total} номеров`);
+    mercedesProgressElements.status.textContent = count >= total
+      ? 'Все 50 номеров распределены. Скоро объявим время живого финала.'
+      : count === 0
+        ? 'После оплаты первого сета появится номер 1 из 50.'
+        : `Оплачено ${count} из ${total} сетов. Осталось ${total - count} номеров.`;
+    if (mercedesProgressElements.orderButton) {
+      mercedesProgressElements.orderButton.disabled = count >= total;
+      mercedesProgressElements.orderButton.innerHTML = count >= total
+        ? 'Все номера розыгрыша заняты'
+        : 'Заказать сет · 5&nbsp;000 ₽ <span aria-hidden="true">↗</span>';
+    }
+  } catch {
+    mercedesProgressElements.status.textContent = 'Счётчик временно не обновился. Попробуйте обновить страницу.';
+  }
+}
+
+void refreshMercedesRaffle();
+window.setInterval(() => {
+  if (!document.hidden) void refreshMercedesRaffle();
+}, 15000);
+document.querySelector('#mercedesOrderButton')?.addEventListener('click', () => {
+  const item = catalogById.get('edenfood-seti-016');
+  if (!item?.available) {
+    showToast('Сет временно недоступен.');
+    return;
+  }
+  changeQuantity(item.catalogId, 1);
+  openCart();
+});
+
 filters.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-category]");
   if (button) selectCategory(button);
@@ -1161,7 +1214,7 @@ void loadCustomerAccount();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-              .register("/sw.js?v=homepage-new-arrivals-20261104", { updateViaCache: "none" })
+              .register("/sw.js?v=mercedes-20261111-v1", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */
