@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://ucrabs.by" />
     <link rel="stylesheet" href="styles.css?v=raffle-closed-20261110" />
     <link rel="stylesheet" href="storefront.css?v=raffle-closed-20261110" />
+    <link rel="stylesheet" href="mercedes-campaign.css?v=mercedes-20261111-v1" />
     <link rel="stylesheet" href="menu-search.css?v=street-199-search-20261005" />
   </head>
   <body>
@@ -21,6 +22,7 @@
       </a>
       <nav aria-label="Разделы меню">
         <a class="nav-menu" href="#categories">☰ Меню</a>
+        <a class="mercedes-nav-link" href="#mercedes-raffle">Розыгрыш авто</a>
         <a href="#contacts">Контакты</a>
         <a href="https://t.me/edenfood" target="_blank" rel="noreferrer">Telegram</a>
         <a href="https://www.instagram.com/edenfood_dubassari/" target="_blank" rel="noreferrer">Instagram</a>
@@ -30,6 +32,12 @@
       </button>
       <button class="header-action account-header-button" id="accountButton" type="button" aria-label="Войти или зарегистрироваться">Войти / регистрация</button>
     </header>
+
+    <a class="mercedes-announcement" href="#mercedes-raffle" aria-label="Розыгрыш Mercedes, 0 из 50 номеров">
+      <span class="mercedes-announcement-copy"><small>МЕГА-РОЗЫГРЫШ EDEN · 50 НОМЕРОВ</small><strong>Сет МЕРСЕДЕС — главный приз Mercedes-Benz C250 Coupe AMG</strong></span>
+      <span class="mercedes-announcement-count"><b id="mercedesAnnouncementCount">0</b><small>из 50</small></span>
+      <span class="mercedes-announcement-action">Условия и призы <span aria-hidden="true">↗</span></span>
+    </a>
 
     <main id="top">
       <section class="menu-hero" aria-labelledby="hero-title">
@@ -64,6 +72,67 @@
           <span>Листайте влево и вправо</span>
         </div>
         <p class="new-arrivals-status" id="newArrivalsStatus" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="mercedes-campaign" id="mercedes-raffle" aria-labelledby="mercedes-title">
+        <div class="mercedes-campaign-glow" aria-hidden="true"></div>
+        <header class="mercedes-campaign-header">
+          <p class="eyebrow">Большой розыгрыш EDEN · всего 50 номеров</p>
+          <h2 id="mercedes-title">Сет МЕРСЕДЕС.<br /><span>Ключи могут стать вашими.</span></h2>
+          <p>Один оплаченный сет — один номер участника. Когда соберём 50 номеров, проведём живой розыгрыш в EDEN.</p>
+        </header>
+        <div class="mercedes-progress-card" aria-live="polite">
+          <div class="mercedes-progress-heading">
+            <div><small>Оплачено наборов</small><strong><span id="mercedesPaidCount">0</span><i> / 50</i></strong></div>
+            <span class="mercedes-progress-live"><i aria-hidden="true"></i> счётчик обновляется автоматически</span>
+          </div>
+          <div class="mercedes-progress-track" role="meter" aria-label="Оплаченные номера розыгрыша" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" id="mercedesProgressMeter"><span id="mercedesProgressFill"></span></div>
+          <p id="mercedesProgressStatus" class="mercedes-progress-status" role="status">После оплаты сета появится первый номер.</p>
+        </div>
+        <div class="mercedes-campaign-grid">
+          <article class="mercedes-featured-set">
+            <div class="mercedes-set-image-wrap"><img src="assets/mercedes/set-mercedes.png" alt="Сет МЕРСЕДЕС EDEN на серой тарелке" loading="lazy" decoding="async" /><span class="mercedes-image-badge">Новинка EDEN</span></div>
+            <div class="mercedes-set-copy">
+              <p class="eyebrow">Один сет · один шанс</p><h3>Сет МЕРСЕДЕС</h3>
+              <p>Набор стоит 5&nbsp;000 ₽. Участие в розыгрыше бесплатно и не требует отдельной платы. Номер присваивается после оплаты.</p>
+              <button class="primary-action mercedes-order-button" type="button" id="mercedesOrderButton">Заказать сет · 5&nbsp;000 ₽ <span aria-hidden="true">↗</span></button>
+              <small class="mercedes-set-note">Состав и общий вес добавим в карточку после получения раскладки.</small>
+            </div>
+          </article>
+          <article class="mercedes-car-prize">
+            <div class="mercedes-prize-title"><span>01 · Главный приз</span><h3>Mercedes-Benz<br /><b>C250 Coupe AMG · 2012</b></h3></div>
+            <div class="mercedes-car-gallery" aria-label="Фотографии автомобиля-приза">
+              <figure class="mercedes-car-photo mercedes-car-photo-main"><img src="assets/mercedes/car-front.png" alt="Mercedes-Benz C250 Coupe AMG, вид спереди" loading="lazy" decoding="async" /></figure>
+              <figure class="mercedes-car-photo"><img src="assets/mercedes/car-rear.png" alt="Mercedes-Benz C250 Coupe AMG, вид сзади" loading="lazy" decoding="async" /></figure>
+              <figure class="mercedes-car-photo"><img src="assets/mercedes/car-interior.png" alt="Светлый кожаный салон Mercedes-Benz C250 Coupe AMG" loading="lazy" decoding="async" /></figure>
+            </div>
+            <ul class="mercedes-specs">
+              <li><b>Мотор</b><span>1.8 Turbo · 204 л.с. · бензин</span></li>
+              <li><b>Коробка</b><span>7-ступенчатый автомат</span></li>
+              <li><b>Оснащение</b><span>AMG-пакет, панорамная крыша, светлая кожа, подогрев сидений</span></li>
+              <li><b>Комфорт</b><span>Электропривод сидений и руля с памятью, подрулевые лепестки, камера заднего вида, Harman Kardon</span></li>
+              <li><b>Колёса</b><span>Оригинальные 18″ AMG; летний и зимний комплекты</span></li>
+              <li><b>Состояние</b><span>Свежий техосмотр и молдавская страховка; автомобиль обслужен</span></li>
+            </ul>
+          </article>
+        </div>
+        <div class="mercedes-secondary-prize">
+          <span class="mercedes-secondary-icon" aria-hidden="true">?</span>
+          <div><small>02 · Утешительный приз</small><h3>Секретный приз</h3><p>Очень смешной и прикольный. Что именно — пока секрет, узнает второй победитель.</p></div>
+          <span class="mercedes-secondary-stamp">СЕКРЕТ</span>
+        </div>
+        <div class="mercedes-rules-grid">
+          <article><span class="mercedes-rule-number">01</span><h3>Купите сет</h3><p>Выберите «Сет МЕРСЕДЕС» за 5&nbsp;000 ₽ на сайте или оформите его через официанта.</p></article>
+          <article><span class="mercedes-rule-number">02</span><h3>Оплатите заказ</h3><p>После оплаты сета участник автоматически получает один свободный номер. Номер и контакты сохраняются в админке.</p></article>
+          <article><span class="mercedes-rule-number">03</span><h3>Следите за счётчиком</h3><p>На сайте отображается число оплаченных номеров. Когда счётчик достигнет 50, мы объявим дату финала.</p></article>
+          <article><span class="mercedes-rule-number">04</span><h3>Финал — вживую</h3><p>Соберёмся по адресу EDEN: Дубоссары, ул. Горького, 22, «Вавилон», 3 этаж. Случайный гость из зала вытянет номер победителя.</p></article>
+        </div>
+        <div class="mercedes-remote-note">
+          <div><strong>Вы за границей?</strong><p>Иностранные гости тоже могут участвовать онлайн. Напишите нам в Telegram или Instagram, чтобы оформить заказ и согласовать получение приза.</p></div>
+          <div><strong>Если победитель не захочет автомобиль</strong><p>После выгодной продажи автомобиля передадим ему полученные средства; сумма будет зависеть от фактической сделки.</p></div>
+          <div class="mercedes-social-actions"><a href="https://t.me/edenfood" target="_blank" rel="noreferrer">Написать в Telegram ↗</a><a href="https://www.instagram.com/edenfood_dubassari/" target="_blank" rel="noreferrer">Написать в Instagram ↗</a></div>
+        </div>
+        <p class="mercedes-campaign-footnote">Участвует только оплаченный сет «МЕРСЕДЕС». Один набор даёт один номер; количество ограничено 50 номерами. Условия участия за пределами Молдовы согласовываются при оформлении заказа.</p>
       </section>
 
       <section class="category-showcase" id="categories" aria-labelledby="categories-title">
@@ -275,10 +344,10 @@
       <button class="product-close" id="closeProduct" type="button" aria-label="Закрыть карточку блюда">×</button>
       <div id="productDetail"></div>
     </dialog>
-    <script src="menu-data.js?v=menu-prices-20261031-v1"></script>
+    <script src="menu-data.js?v=mercedes-set-20261111-v1"></script>
     <script src="extra-menu-data.js?v=tom-yam-price-130-20261108-v1"></script>
     <script src="street-menu-data.js?v=menu-prices-20261031-v1"></script>
     <script src="menu-search.js?v=street-199-search-20261005"></script>
-    <script src="app.js?v=tom-yam-price-130-20261108-v1"></script>
+    <script src="app.js?v=mercedes-raffle-20261111-v1"></script>
   </body>
 </html>

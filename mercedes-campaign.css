@@ -1,0 +1,146 @@
+.mercedes-nav-link {
+  color: #d95045 !important;
+  font-weight: 800;
+}
+
+.mercedes-announcement {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 22px;
+  max-width: 1440px;
+  margin: 12px auto 0;
+  padding: 14px 22px;
+  border: 1px solid rgba(217, 80, 69, 0.38);
+  border-radius: 18px;
+  background: linear-gradient(105deg, #211e1d, #302321 62%, #211e1d);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 12px 34px rgba(36, 16, 14, 0.13);
+}
+
+.mercedes-announcement-copy { display: grid; gap: 4px; }
+.mercedes-announcement-copy small { color: #ed948b; font-size: 10px; font-weight: 900; letter-spacing: .14em; }
+.mercedes-announcement-copy strong { font-size: clamp(13px, 1.6vw, 17px); }
+.mercedes-announcement-count { display: grid; place-items: center; min-width: 62px; line-height: 1; }
+.mercedes-announcement-count b { color: #ff8277; font: 800 24px/1 Georgia, serif; }
+.mercedes-announcement-count small { margin-top: 4px; color: #d3c7c3; font-size: 10px; }
+.mercedes-announcement-action { color: #f5d4ce; font-size: 12px; font-weight: 700; white-space: nowrap; }
+
+.mercedes-campaign {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: 1440px;
+  margin: clamp(30px, 5vw, 68px) auto;
+  padding: clamp(22px, 5vw, 60px);
+  border: 1px solid #3a3534;
+  border-radius: clamp(24px, 3vw, 38px);
+  background: linear-gradient(145deg, #121212 4%, #1e1b1b 52%, #292321 100%);
+  color: #f8f6f3;
+  box-shadow: 0 30px 90px rgba(24, 14, 12, .2);
+}
+
+.mercedes-campaign-glow { position: absolute; z-index: -1; top: -270px; right: -150px; width: 700px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(190, 61, 49, .22), transparent 68%); pointer-events: none; }
+.mercedes-campaign-header { max-width: 760px; }
+.mercedes-campaign-header .eyebrow { color: #f08176; }
+.mercedes-campaign-header h2 { margin: 12px 0 14px; font: 700 clamp(36px, 6.3vw, 76px)/.99 Georgia, 'Times New Roman', serif; letter-spacing: -.045em; }
+.mercedes-campaign-header h2 span { color: #ed786d; }
+.mercedes-campaign-header > p:last-child { max-width: 630px; color: #d0c9c5; font-size: clamp(15px, 1.8vw, 19px); line-height: 1.55; }
+
+.mercedes-progress-card { margin: 34px 0 28px; padding: 20px 22px 15px; border: 1px solid rgba(255,255,255,.13); border-radius: 20px; background: rgba(255,255,255,.055); }
+.mercedes-progress-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; }
+.mercedes-progress-heading > div { display: grid; gap: 4px; }
+.mercedes-progress-heading small { color: #c0b8b4; font-size: 12px; }
+.mercedes-progress-heading strong { font: 700 35px/1 Georgia, serif; }
+.mercedes-progress-heading strong i { color: #a9a19d; font-size: 19px; font-style: normal; }
+.mercedes-progress-live { display: inline-flex; align-items: center; gap: 8px; color: #c2bab6; font-size: 11px; }
+.mercedes-progress-live i { width: 7px; height: 7px; border-radius: 50%; background: #7fc28a; box-shadow: 0 0 0 4px rgba(127,194,138,.14); }
+.mercedes-progress-track { height: 13px; margin: 14px 0 10px; overflow: hidden; border-radius: 20px; background: #3b3533; }
+.mercedes-progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #c84b40, #ff8a7e); box-shadow: 0 0 18px rgba(230, 88, 76, .45); transition: width .65s cubic-bezier(.2,.75,.3,1); }
+.mercedes-progress-status { margin: 0; color: #b9b1ad; font-size: 12px; }
+
+.mercedes-campaign-grid { display: grid; grid-template-columns: minmax(280px, .78fr) minmax(0, 1.22fr); gap: 22px; align-items: stretch; }
+.mercedes-featured-set, .mercedes-car-prize { overflow: hidden; border: 1px solid rgba(255,255,255,.12); border-radius: 24px; background: rgba(255,255,255,.055); }
+.mercedes-set-image-wrap { position: relative; aspect-ratio: 1.18; overflow: hidden; background: #5b5b5b; }
+.mercedes-set-image-wrap img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mercedes-image-badge { position: absolute; top: 15px; left: 15px; padding: 8px 12px; border: 1px solid rgba(255,255,255,.38); border-radius: 99px; background: rgba(25,23,22,.78); color: white; font-size: 10px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; backdrop-filter: blur(10px); }
+.mercedes-set-copy { padding: 22px 23px 24px; }
+.mercedes-set-copy .eyebrow { margin: 0 0 6px; color: #f08378; }
+.mercedes-set-copy h3 { margin: 0; font: 700 31px/1.05 Georgia, serif; }
+.mercedes-set-copy > p:not(.eyebrow) { color: #c9c1bd; font-size: 14px; line-height: 1.55; }
+.mercedes-order-button { width: 100%; justify-content: center; border: 0; cursor: pointer; }
+.mercedes-set-note { display: block; margin-top: 12px; color: #9e9692; font-size: 11px; line-height: 1.45; }
+
+.mercedes-car-prize { padding: 20px; }
+.mercedes-prize-title > span { color: #f08a80; font-size: 11px; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+.mercedes-prize-title h3 { margin: 8px 0 15px; font: 700 clamp(25px, 3.4vw, 39px)/1.05 Georgia, serif; }
+.mercedes-prize-title h3 b { color: #e8877e; font-size: .62em; font-weight: 500; letter-spacing: .02em; }
+.mercedes-car-gallery { display: grid; grid-template-columns: 1.15fr .85fr; grid-template-rows: repeat(2, minmax(90px, 1fr)); gap: 9px; overflow: hidden; border-radius: 16px; }
+.mercedes-car-photo { min-width: 0; min-height: 0; margin: 0; overflow: hidden; background: #444; }
+.mercedes-car-photo-main { grid-row: span 2; }
+.mercedes-car-photo img { display: block; width: 100%; height: 100%; min-height: 96px; object-fit: cover; }
+.mercedes-car-photo-main img { min-height: 220px; }
+.mercedes-specs { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px 18px; margin: 17px 0 0; padding: 0; list-style: none; }
+.mercedes-specs li { display: grid; gap: 3px; padding-top: 9px; border-top: 1px solid rgba(255,255,255,.13); }
+.mercedes-specs li b { color: #f0ebe7; font-size: 12px; }
+.mercedes-specs li span { color: #aaa29e; font-size: 11px; line-height: 1.4; }
+
+.mercedes-secondary-prize { display: grid; grid-template-columns: 52px minmax(0,1fr) auto; align-items: center; gap: 16px; margin-top: 22px; padding: 17px 20px; border: 1px solid rgba(232,135,126,.32); border-radius: 18px; background: linear-gradient(100deg, rgba(142,55,47,.2), rgba(255,255,255,.035)); }
+.mercedes-secondary-icon { display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid #df756b; border-radius: 14px; color: #f18c82; font: 700 30px Georgia, serif; }
+.mercedes-secondary-prize small { color: #ee8b81; font-size: 10px; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+.mercedes-secondary-prize h3 { margin: 3px 0; font: 700 22px Georgia, serif; }
+.mercedes-secondary-prize p { margin: 0; color: #bcb4b0; font-size: 12px; }
+.mercedes-secondary-stamp { padding: 8px 10px; border: 1px dashed #d4776d; border-radius: 8px; color: #ef9187; font-size: 10px; font-weight: 900; letter-spacing: .14em; transform: rotate(-5deg); }
+
+.mercedes-rules-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-top: 22px; }
+.mercedes-rules-grid article { position: relative; min-height: 156px; padding: 17px; border: 1px solid rgba(255,255,255,.11); border-radius: 16px; background: rgba(255,255,255,.04); }
+.mercedes-rule-number { display: inline-grid; width: 28px; height: 28px; place-items: center; border-radius: 9px; background: rgba(217,80,69,.18); color: #ef8278; font-size: 10px; font-weight: 900; }
+.mercedes-rules-grid h3 { margin: 12px 0 6px; font-size: 14px; }
+.mercedes-rules-grid p { margin: 0; color: #b9b1ad; font-size: 11px; line-height: 1.5; }
+.mercedes-remote-note { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; padding: 19px 21px; border-radius: 18px; background: #eee9e5; color: #2a2523; }
+.mercedes-remote-note strong { font: 700 16px Georgia, serif; }
+.mercedes-remote-note p { margin: 5px 0 0; color: #57504d; font-size: 12px; line-height: 1.5; }
+.mercedes-social-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; grid-column: 1 / -1; padding-top: 14px; border-top: 1px solid #d7cfca; }
+.mercedes-social-actions a { display: inline-flex; padding: 9px 13px; border-radius: 99px; background: #211e1d; color: #fff; font-size: 11px; font-weight: 700; text-decoration: none; }
+.mercedes-campaign-footnote { margin: 15px 0 0; color: #918986; font-size: 10px; line-height: 1.5; }
+
+@media (max-width: 840px) {
+  .mercedes-campaign-grid { grid-template-columns: 1fr; }
+  .mercedes-rules-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 600px) {
+  .mercedes-announcement { grid-template-columns: minmax(0,1fr) auto; gap: 10px; margin: 8px 12px 0; padding: 12px; border-radius: 14px; }
+  .mercedes-announcement-copy small { font-size: 8px; }
+  .mercedes-announcement-copy strong { font-size: 12px; line-height: 1.35; }
+  .mercedes-announcement-count { grid-column: 2; grid-row: 1; }
+  .mercedes-announcement-action { grid-column: 1 / -1; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.1); font-size: 11px; }
+  .mercedes-campaign { margin: 28px 10px; padding: 22px 14px; border-radius: 24px; }
+  .mercedes-campaign-header h2 { font-size: clamp(34px, 10vw, 48px); }
+  .mercedes-progress-card { margin: 23px 0 18px; padding: 15px; }
+  .mercedes-progress-heading { align-items: start; }
+  .mercedes-progress-heading strong { font-size: 29px; }
+  .mercedes-progress-live { max-width: 128px; align-items: flex-start; font-size: 9px; line-height: 1.4; }
+  .mercedes-featured-set, .mercedes-car-prize { border-radius: 18px; }
+  .mercedes-set-copy { padding: 18px; }
+  .mercedes-car-prize { padding: 15px; }
+  .mercedes-car-gallery { grid-template-rows: repeat(2, 94px); }
+  .mercedes-car-photo-main img { min-height: 196px; }
+  .mercedes-specs { grid-template-columns: 1fr; gap: 7px; }
+  .mercedes-specs li { grid-template-columns: 92px 1fr; align-items: baseline; gap: 8px; }
+  .mercedes-secondary-prize { grid-template-columns: 42px 1fr; gap: 12px; padding: 14px; }
+  .mercedes-secondary-icon { width: 40px; height: 40px; font-size: 25px; }
+  .mercedes-secondary-stamp { display: none; }
+  .mercedes-secondary-prize h3 { font-size: 19px; }
+  .mercedes-rules-grid { gap: 8px; }
+  .mercedes-rules-grid article { min-height: 0; padding: 12px; }
+  .mercedes-rules-grid h3 { margin-top: 8px; font-size: 12px; }
+  .mercedes-rules-grid p { font-size: 10px; }
+  .mercedes-remote-note { grid-template-columns: 1fr; gap: 14px; padding: 16px; }
+  .mercedes-social-actions { grid-column: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mercedes-progress-track span { transition: none; }
+}
