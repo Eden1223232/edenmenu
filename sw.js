@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = "edenfood-site-shell-mercedes-20261111-v1";
+const SHELL_CACHE = "edenfood-site-shell-mercedes-20261111-v2";
 const SHELL_URLS = [
   "/",
   "/index.html",
@@ -22,7 +22,7 @@ const SHELL_URLS = [
   "/assets/rolls/double-shrimp.png",
   "/assets/rolls/philadelphia-tataki-mango.png",
   "/assets/soups/tom-yam.jpg",
-  "/assets/mercedes/set-mercedes.png",
+  "/assets/mercedes/set-mercedes.png?v=gray-background-20261111-v2",
   "/assets/mercedes/car-front.png",
   "/assets/mercedes/car-rear.png",
   "/assets/mercedes/car-interior.png",
