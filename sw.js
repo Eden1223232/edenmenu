@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = "edenfood-site-shell-mercedes-20261111-v1";
+const SHELL_CACHE = "edenfood-site-shell-products-nori-20261111-v1";
 const SHELL_URLS = [
   "/",
   "/index.html",
@@ -7,12 +7,13 @@ const SHELL_URLS = [
   "/storefront.css?v=raffle-closed-20261110",
   "/mercedes-campaign.css?v=mercedes-20261111-v1",
   "/menu-search.css?v=street-199-search-20261005",
-  "/menu-data.js?v=mercedes-set-20261111-v1",
+  "/menu-data.js?v=products-nori-20261111-v1",
   "/extra-menu-data.js?v=tom-yam-price-130-20261108-v1",
   "/street-menu-data.js?v=menu-prices-20261031-v1",
   "/menu-search.js?v=street-199-search-20261005",
-  "/app.js?v=mercedes-raffle-20261111-v1",
+  "/app.js?v=nori-contain-20261111-v1",
   "/assets/logo-eden.webp",
+  "/assets/items/nori-100-gray.png",
   "/assets/snacks/fries.webp",
   "/assets/snacks/cheese-sticks.webp",
   "/assets/snacks/nuggets.webp",
@@ -22,7 +23,7 @@ const SHELL_URLS = [
   "/assets/rolls/double-shrimp.png",
   "/assets/rolls/philadelphia-tataki-mango.png",
   "/assets/soups/tom-yam.jpg",
-  "/assets/mercedes/set-mercedes.png",
+  "/assets/mercedes/set-mercedes.png?v=gray-background-20261111-v2",
   "/assets/mercedes/car-front.png",
   "/assets/mercedes/car-rear.png",
   "/assets/mercedes/car-interior.png",

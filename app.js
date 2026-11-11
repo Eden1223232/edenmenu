@@ -143,6 +143,7 @@ const featuredCategoryOrder = [
   "coffee",
   "tea",
   "drink_addons",
+  "products",
 ];
 const categoryRank = new Map(
   featuredCategoryOrder.map((categoryId, index) => [categoryId, index]),
@@ -261,7 +262,11 @@ function itemCard(item) {
   article.className = "menu-item";
   article.dataset.catalogId = item.catalogId;
   const imageClass =
-    item.imageFit === "cover" ? "item-image item-image--cover" : "item-image";
+    item.imageFit === "cover"
+      ? "item-image item-image--cover"
+      : item.imageFit === "contain"
+        ? "item-image item-image--contain"
+        : "item-image";
   const imageMarkup = item.image
     ? `<img class="${imageClass}" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async">`
     : `<div class="item-image item-image-placeholder" aria-hidden="true"><span>${escapeHtml(item.name)}</span></div>`;
