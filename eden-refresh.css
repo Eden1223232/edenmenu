@@ -110,6 +110,7 @@ main { overflow: clip; }
 .shift-person-copy strong { display: block; margin-top: 6px; color: #fff; font-size: 22px; font-weight: 850; line-height: 1.12; }
 .shift-person-copy span { display: block; margin-top: 5px; color: #f07a80; font-size: 12px; }
 .shift-person-burst { position: absolute; z-index: 3; inset: 0; overflow: visible; pointer-events: none; }
+.shift-person-burst[hidden] { display: none !important; }
 .shift-person-burst i { position: absolute; top: 50%; left: 50%; color: #ff6971; font-size: 19px; font-style: normal; font-weight: 900; opacity: 0; text-shadow: 0 0 14px #df1520,0 0 28px #ffb66e; transform: translate(-50%,-50%) scale(.2); }
 .shift-person.is-celebrating { z-index: 8; transform: translateY(-2px) scale(1.055); border-color: #f05a62; background: linear-gradient(115deg,#df15201c,#ffffff08); box-shadow: 0 0 0 4px #df152026,0 18px 42px #df15204a; }
 .shift-person.is-celebrating .shift-person-photo { border-color: #ffc1a5; box-shadow: 0 0 0 3px #ff4e5833,0 0 25px #df15206b; }

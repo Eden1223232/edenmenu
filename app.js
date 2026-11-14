@@ -108,7 +108,7 @@ async function refreshCurrentShifts() {
           <span class="shift-person-live-dot" aria-label="На смене" title="Сейчас на смене"></span>
         </div>
         <div class="shift-person-copy"><small>СЕЙЧАС НА СМЕНЕ</small><strong>${escapeHtml(name)}</strong><span>${escapeHtml(title)}</span></div>
-        <span class="shift-person-burst" aria-hidden="true"><i>✦</i><i>✧</i><i>✦</i><i>✷</i><i>✧</i><i>✦</i></span>
+        <span class="shift-person-burst" aria-hidden="true" hidden><i>✦</i><i>✧</i><i>✦</i><i>✷</i><i>✧</i><i>✦</i></span>
       </button>`;
     }).join("");
     currentShiftGrid.querySelectorAll(".shift-person-photo img").forEach((image) => {
@@ -1137,7 +1137,11 @@ function celebrateShiftPerson(card) {
   if (celebratingShiftCard && celebratingShiftCard !== card) {
     celebratingShiftCard.classList.remove("is-celebrating");
     celebratingShiftCard.setAttribute("aria-pressed", "false");
+    const oldBurst = celebratingShiftCard.querySelector(".shift-person-burst");
+    if (oldBurst) oldBurst.hidden = true;
   }
+  const burst = card.querySelector(".shift-person-burst");
+  if (burst) burst.hidden = false;
   card.classList.remove("is-celebrating");
   void card.offsetWidth;
   celebratingShiftCard = card;
@@ -1146,6 +1150,7 @@ function celebrateShiftPerson(card) {
   shiftCelebrateTimer = window.setTimeout(() => {
     card.classList.remove("is-celebrating");
     card.setAttribute("aria-pressed", "false");
+    if (burst) burst.hidden = true;
     if (celebratingShiftCard === card) celebratingShiftCard = null;
   }, 2500);
 }
