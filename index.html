@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="storefront.css?v=raffle-closed-20261110" />
     <link rel="stylesheet" href="mercedes-campaign.css?v=mercedes-20261111-v1" />
     <link rel="stylesheet" href="menu-search.css?v=street-199-search-20261005" />
-    <link rel="stylesheet" href="eden-refresh.css?v=night-market-20261114" />
+    <link rel="stylesheet" href="eden-refresh.css?v=crew-night-market-20261114-v2" />
   </head>
   <body>
     <header class="site-header">
@@ -22,95 +22,88 @@
         <a class="brand" href="#top" aria-label="EDEN Food — на главную">
           <img src="assets/logo-eden.webp" alt="" width="48" height="48" />
           <span>Eden</span><strong>Food</strong>
+          <small>ДУБОССАРЫ</small>
         </a>
         <nav class="site-nav" aria-label="Главная навигация">
           <a class="nav-menu" href="#menu">Меню</a>
+          <a href="#categories">Разделы</a>
           <a href="#newArrivals">Новинки</a>
-          <a class="mercedes-nav-link" href="#mercedes-raffle">Розыгрыш авто</a>
+          <a href="#mercedes-raffle">Розыгрыш</a>
           <a href="#contacts">Контакты</a>
         </nav>
         <div class="header-actions">
+          <button class="header-action account-header-button" id="accountButton" type="button" aria-label="Войти или зарегистрироваться">Войти</button>
           <button class="header-action cart-header-button" id="headerCartButton" type="button">
             Корзина <span class="cart-count" data-cart-count>0</span>
           </button>
-          <button class="header-action account-header-button" id="accountButton" type="button" aria-label="Войти или зарегистрироваться">Войти</button>
         </div>
       </div>
     </header>
 
     <a class="mercedes-announcement" href="#mercedes-raffle" aria-label="Розыгрыш Mercedes, 0 из 50 номеров">
-      <span class="mercedes-announcement-copy"><small>МЕГА-РОЗЫГРЫШ EDEN · 50 НОМЕРОВ</small><strong>Сет МЕРСЕДЕС — главный приз Mercedes-Benz C250 Coupe AMG</strong></span>
+      <span class="mercedes-announcement-mark" aria-hidden="true">EDEN / 50</span>
+      <span class="mercedes-announcement-copy"><small>РОЗЫГРЫШ · ГЛАВНЫЙ ПРИЗ</small><strong>Сет МЕРСЕДЕС — Mercedes-Benz C250 Coupe AMG</strong></span>
       <span class="mercedes-announcement-count"><b id="mercedesAnnouncementCount">0</b><small>из 50</small></span>
-      <span class="mercedes-announcement-action">Смотреть условия <span aria-hidden="true">↗</span></span>
+      <span class="mercedes-announcement-action">Условия <span aria-hidden="true">↗</span></span>
     </a>
 
     <main id="top">
       <section class="menu-hero" aria-labelledby="hero-title">
         <div class="menu-hero-copy">
-          <p class="eyebrow">EDENFOOD · ДУБОССАРЫ</p>
-          <h1 id="hero-title">Собирайся.<br /><span>Заказывай.</span></h1>
-          <p>Роллы и сеты, горячие закуски и напитки. Выбирай любимое в меню — мы примем заказ на месте, на самовывоз или доставку.</p>
+          <p class="eyebrow">ЕДЕН · РОЛЛЫ · СЕТЫ · ДУБОССАРЫ</p>
+          <h1 id="hero-title">Вкус,<br /><span>который</span><br />собирает.</h1>
+          <p>Выбирай любимое, пробуй новое и собирай свой вечер. Заказы на месте, самовывоз и доставка — в одном меню.</p>
           <div class="hero-actions">
-            <a class="primary-action" href="#menu">Открыть меню <span aria-hidden="true">↗</span></a>
-            <a class="hero-secondary-action" href="#newArrivals">Посмотреть новинки</a>
+            <a class="primary-action" href="#menu">Смотреть меню <span aria-hidden="true">↗</span></a>
+            <a class="hero-secondary-action" href="#newArrivals">Наши новинки <span aria-hidden="true">↓</span></a>
           </div>
           <div class="hero-benefits" aria-label="Варианты заказа">
-            <span>На месте</span><span>Самовывоз</span><span>Доставка</span>
+            <span>В зале</span><i></i><span>Самовывоз</span><i></i><span>Доставка</span>
           </div>
         </div>
-        <img class="menu-hero-photo" src="assets/sets/mognu.png" alt="Сет МОГНУ — роллы на сером фоне" width="1600" height="1600" fetchpriority="high" />
-        <a class="hero-street-link" href="#menu" data-select-category="street_rolls"><span>Попробуй новое</span><strong>Стрит-роллы в тубусе →</strong></a>
+        <div class="hero-visual">
+          <span class="hero-visual-index">01 <i>/ EDEN MENU</i></span>
+          <img class="menu-hero-photo" src="assets/sets/mognu.png" alt="Сет МОГНУ — роллы на сером фоне" width="1600" height="1600" fetchpriority="high" />
+          <a class="hero-street-link" href="#menu" data-select-category="street_rolls"><span>Фирменный формат</span><strong>Стрит-роллы в тубусе <b aria-hidden="true">↗</b></strong></a>
+          <span class="hero-visual-stamp" aria-hidden="true">СВЕЖО<br />КАЖДЫЙ<br />ДЕНЬ</span>
+        </div>
+      </section>
+
+      <section class="shift-board" id="currentShiftSection" aria-labelledby="currentShiftTitle" aria-live="polite" hidden>
+        <div class="shift-board-heading">
+          <div><p class="eyebrow">EDEN CREW / LIVE</p><h2 id="currentShiftTitle">Сейчас на смене</h2><p>Люди, которые сегодня готовят и встречают вас.</p></div>
+          <span class="shift-board-live"><i aria-hidden="true"></i> смена открыта</span>
+        </div>
+        <div class="shift-people" id="currentShiftGrid"></div>
       </section>
 
       <section class="new-arrivals" id="newArrivals" aria-labelledby="newArrivalsTitle" hidden>
         <div class="new-arrivals-heading">
-          <div>
-            <p class="eyebrow">Свежее в меню</p>
-            <h2 id="newArrivalsTitle">Новинки EDEN</h2>
-            <p class="new-arrivals-subtitle">Новые блюда появляются здесь первыми. Листайте или сразу добавляйте в корзину.</p>
-          </div>
+          <div><p class="eyebrow">ТОЛЬКО ПОЯВИЛОСЬ</p><h2 id="newArrivalsTitle">Свежие поводы попробовать</h2><p class="new-arrivals-subtitle">Листай новинки или добавляй понравившееся прямо отсюда.</p></div>
           <div class="new-arrivals-controls" aria-label="Управление новинками">
             <button type="button" data-new-arrivals-previous aria-label="Предыдущая новинка">←</button>
             <button type="button" data-new-arrivals-toggle aria-pressed="false" aria-label="Приостановить автопрокрутку">Ⅱ Пауза</button>
             <button type="button" data-new-arrivals-next aria-label="Следующая новинка">→</button>
           </div>
         </div>
-        <div class="new-arrivals-viewport" id="newArrivalsViewport">
-          <div class="new-arrivals-track" id="newArrivalsTrack"></div>
-        </div>
-        <div class="new-arrivals-footer">
-          <div class="new-arrivals-dots" id="newArrivalsDots" role="group" aria-label="Выбрать новинку"></div>
-          <span>Автопоказ · листайте влево и вправо</span>
-        </div>
+        <div class="new-arrivals-viewport" id="newArrivalsViewport"><div class="new-arrivals-track" id="newArrivalsTrack"></div></div>
+        <div class="new-arrivals-footer"><div class="new-arrivals-dots" id="newArrivalsDots" role="group" aria-label="Выбрать новинку"></div><span>Автопоказ · свайпайте на телефоне</span></div>
         <p class="new-arrivals-status" id="newArrivalsStatus" role="status" aria-live="polite"></p>
       </section>
 
       <section class="category-showcase" id="categories" aria-labelledby="categories-title">
-        <div class="showcase-heading">
-          <div><p class="eyebrow">Выбирай по настроению</p><h2 id="categories-title">С чего начнём?</h2></div>
-          <a href="#menu" data-select-category="all">Все блюда <span aria-hidden="true">↗</span></a>
-        </div>
+        <div class="showcase-heading"><div><p class="eyebrow">МЕНЮ EDEN</p><h2 id="categories-title">Выбирай по настроению</h2></div><a href="#menu" data-select-category="all">Все позиции <span aria-hidden="true">↗</span></a></div>
         <div class="category-tiles" id="categoryTiles"></div>
-        <button class="more-categories" id="moreCategories" type="button" aria-expanded="false" aria-controls="categoryTiles">Показать все разделы ↓</button>
+        <button class="more-categories" id="moreCategories" type="button" aria-expanded="false" aria-controls="categoryTiles">Все разделы меню <span aria-hidden="true">＋</span></button>
       </section>
 
       <section class="how-order" aria-labelledby="how-order-title">
-        <div>
-          <h2 id="how-order-title">Заказ — без лишних шагов</h2>
-          <p>После отправки официант подтвердит его и сообщит, если нужно уточнить детали.</p>
-        </div>
-        <div class="order-steps">
-          <div class="order-step"><b>01</b><span>Выберите блюда и добавьте их в корзину</span></div>
-          <div class="order-step"><b>02</b><span>Укажите контакты и как получить заказ</span></div>
-          <div class="order-step"><b>03</b><span>Отправьте — официант подтвердит заказ</span></div>
-        </div>
+        <div><p class="eyebrow">ПРОСТО И УДОБНО</p><h2 id="how-order-title">Три шага до любимого</h2><p>После отправки официант подтвердит заказ и сообщит, если нужно уточнить детали.</p></div>
+        <div class="order-steps"><div class="order-step"><b>01</b><span>Выбери блюда и добавь их в корзину</span></div><div class="order-step"><b>02</b><span>Укажи контакты и как получить заказ</span></div><div class="order-step"><b>03</b><span>Отправь — мы подтвердим заказ</span></div></div>
       </section>
 
       <section class="menu-shell" id="menu" aria-labelledby="menuTitle">
-        <div class="section-heading">
-          <div><p class="eyebrow">Меню EDEN</p><h2 id="menuTitle">Выберите своё любимое</h2></div>
-          <p>Ищите по названию или ингредиенту. Нажмите на фото блюда, чтобы посмотреть состав.</p>
-        </div>
+        <div class="section-heading"><div><p class="eyebrow">ПРИГОТОВЛЕНО ДЛЯ ТЕБЯ</p><h2 id="menuTitle">Всё меню</h2></div><p>Найди блюдо по названию или ингредиенту. Нажми на фото, чтобы посмотреть состав.</p></div>
         <div class="menu-navigation">
           <div class="menu-tools">
             <label class="search-field">
@@ -371,6 +364,6 @@
     <script src="extra-menu-data.js?v=tom-yam-price-130-20261108-v1"></script>
     <script src="street-menu-data.js?v=menu-prices-20261031-v1"></script>
     <script src="menu-search.js?v=street-199-search-20261005"></script>
-    <script src="app.js?v=nori-contain-20261111-v1"></script>
+    <script src="app.js?v=crew-shifts-20261114-v1"></script>
   </body>
 </html>
