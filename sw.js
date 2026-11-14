@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = "edenfood-site-shell-crew-shift-dance-20261114-v1";
+const SHELL_CACHE = "edenfood-site-shell-shift-bottom-20261114-v2";
 const SHELL_URLS = [
   "/",
   "/index.html",
