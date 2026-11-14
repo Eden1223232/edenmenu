@@ -101,14 +101,15 @@ async function refreshCurrentShifts() {
         ? shift.photoUrl
         : "";
       const initial = Array.from(name.trim())[0] || "E";
-      return `<article class="shift-person">
+      return `<button class="shift-person" type="button" aria-label="Порадовать анимацией: ${escapeHtml(name)}, ${escapeHtml(title)}" aria-pressed="false">
         <div class="shift-person-photo">
           <span class="shift-person-initial" ${photoUrl ? "hidden" : ""} aria-hidden="true">${escapeHtml(initial)}</span>
           ${photoUrl ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async">` : ""}
           <span class="shift-person-live-dot" aria-label="На смене" title="Сейчас на смене"></span>
         </div>
         <div class="shift-person-copy"><small>СЕЙЧАС НА СМЕНЕ</small><strong>${escapeHtml(name)}</strong><span>${escapeHtml(title)}</span></div>
-      </article>`;
+        <span class="shift-person-burst" aria-hidden="true"><i>✦</i><i>✧</i><i>✦</i><i>✷</i><i>✧</i><i>✦</i></span>
+      </button>`;
     }).join("");
     currentShiftGrid.querySelectorAll(".shift-person-photo img").forEach((image) => {
       image.addEventListener("error", () => {
@@ -1121,6 +1122,75 @@ window.setInterval(() => {
 }, 15000);
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) void refreshCurrentShifts();
+});
+
+let shiftHoldTimer = 0;
+let shiftCelebrateTimer = 0;
+let shiftHoldCard = null;
+let shiftHoldPoint = null;
+let shiftHoldTriggered = false;
+let suppressShiftClickUntil = 0;
+let celebratingShiftCard = null;
+function celebrateShiftPerson(card) {
+  if (!card) return;
+  window.clearTimeout(shiftCelebrateTimer);
+  if (celebratingShiftCard && celebratingShiftCard !== card) {
+    celebratingShiftCard.classList.remove("is-celebrating");
+    celebratingShiftCard.setAttribute("aria-pressed", "false");
+  }
+  card.classList.remove("is-celebrating");
+  void card.offsetWidth;
+  celebratingShiftCard = card;
+  card.classList.add("is-celebrating");
+  card.setAttribute("aria-pressed", "true");
+  shiftCelebrateTimer = window.setTimeout(() => {
+    card.classList.remove("is-celebrating");
+    card.setAttribute("aria-pressed", "false");
+    if (celebratingShiftCard === card) celebratingShiftCard = null;
+  }, 2500);
+}
+function clearShiftHold() {
+  window.clearTimeout(shiftHoldTimer);
+  shiftHoldTimer = 0;
+  shiftHoldCard = null;
+  shiftHoldPoint = null;
+  shiftHoldTriggered = false;
+}
+currentShiftGrid?.addEventListener("pointerdown", (event) => {
+  const card = event.target.closest(".shift-person");
+  if (!card || !event.isPrimary || (event.button !== undefined && event.button > 0)) return;
+  clearShiftHold();
+  shiftHoldCard = card;
+  shiftHoldPoint = { x: event.clientX, y: event.clientY };
+  shiftHoldTriggered = false;
+  shiftHoldTimer = window.setTimeout(() => {
+    if (shiftHoldCard !== card) return;
+    shiftHoldTriggered = true;
+    suppressShiftClickUntil = Date.now() + 550;
+    celebrateShiftPerson(card);
+  }, 480);
+}, { passive: true });
+window.addEventListener("pointermove", (event) => {
+  if (!shiftHoldCard || !shiftHoldPoint) return;
+  if (Math.hypot(event.clientX - shiftHoldPoint.x, event.clientY - shiftHoldPoint.y) > 12) clearShiftHold();
+}, { passive: true });
+window.addEventListener("pointerup", () => {
+  if (shiftHoldTriggered) suppressShiftClickUntil = Date.now() + 550;
+  clearShiftHold();
+}, { passive: true });
+window.addEventListener("pointercancel", clearShiftHold, { passive: true });
+window.addEventListener("blur", clearShiftHold);
+currentShiftGrid?.addEventListener("contextmenu", (event) => {
+  if (event.target.closest(".shift-person.is-celebrating")) event.preventDefault();
+});
+currentShiftGrid?.addEventListener("click", (event) => {
+  const card = event.target.closest(".shift-person");
+  if (!card) return;
+  if (Date.now() < suppressShiftClickUntil) {
+    event.preventDefault();
+    return;
+  }
+  celebrateShiftPerson(card);
 });
 document.querySelector('#mercedesOrderButton')?.addEventListener('click', () => {
   const item = catalogById.get('edenfood-seti-016');
