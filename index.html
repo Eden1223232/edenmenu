@@ -3,60 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EdenFood | Меню роллов и сетов</title>
+    <title>EDEN Food — меню и заказ в Дубоссарах</title>
     <meta
       name="description"
-      content="EdenFood Дубоссары: роллы, сеты, горячие позиции, десерты и напитки. Соберите корзину и оформите заказ на месте, на самовывоз или доставку."
+      content="Меню EDEN Food в Дубоссарах: роллы, сеты, горячие блюда, супы, десерты и напитки. Соберите заказ на сайте: зал, самовывоз или доставка."
     />
+    <meta name="theme-color" content="#090909" />
     <link rel="preconnect" href="https://ucrabs.by" />
     <link rel="stylesheet" href="styles.css?v=raffle-closed-20261110" />
     <link rel="stylesheet" href="storefront.css?v=raffle-closed-20261110" />
     <link rel="stylesheet" href="mercedes-campaign.css?v=mercedes-20261111-v1" />
     <link rel="stylesheet" href="menu-search.css?v=street-199-search-20261005" />
+    <link rel="stylesheet" href="eden-refresh.css?v=night-market-20261114" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="EdenFood">
-        <img src="assets/logo-eden.webp" alt="" width="48" height="48" />
-        <span>Eden</span><strong>Food</strong>
-      </a>
-      <nav aria-label="Разделы меню">
-        <a class="nav-menu" href="#categories">☰ Меню</a>
-        <a class="mercedes-nav-link" href="#mercedes-raffle">Розыгрыш авто</a>
-        <a href="#contacts">Контакты</a>
-        <a href="https://t.me/edenfood" target="_blank" rel="noreferrer">Telegram</a>
-        <a href="https://www.instagram.com/edenfood_dubassari/" target="_blank" rel="noreferrer">Instagram</a>
-      </nav>
-      <button class="header-action cart-header-button" id="headerCartButton" type="button">
-        Корзина <span class="cart-count" data-cart-count>0</span>
-      </button>
-      <button class="header-action account-header-button" id="accountButton" type="button" aria-label="Войти или зарегистрироваться">Войти / регистрация</button>
+      <div class="site-header-inner">
+        <a class="brand" href="#top" aria-label="EDEN Food — на главную">
+          <img src="assets/logo-eden.webp" alt="" width="48" height="48" />
+          <span>Eden</span><strong>Food</strong>
+        </a>
+        <nav class="site-nav" aria-label="Главная навигация">
+          <a class="nav-menu" href="#menu">Меню</a>
+          <a href="#newArrivals">Новинки</a>
+          <a class="mercedes-nav-link" href="#mercedes-raffle">Розыгрыш авто</a>
+          <a href="#contacts">Контакты</a>
+        </nav>
+        <div class="header-actions">
+          <button class="header-action cart-header-button" id="headerCartButton" type="button">
+            Корзина <span class="cart-count" data-cart-count>0</span>
+          </button>
+          <button class="header-action account-header-button" id="accountButton" type="button" aria-label="Войти или зарегистрироваться">Войти</button>
+        </div>
+      </div>
     </header>
 
     <a class="mercedes-announcement" href="#mercedes-raffle" aria-label="Розыгрыш Mercedes, 0 из 50 номеров">
       <span class="mercedes-announcement-copy"><small>МЕГА-РОЗЫГРЫШ EDEN · 50 НОМЕРОВ</small><strong>Сет МЕРСЕДЕС — главный приз Mercedes-Benz C250 Coupe AMG</strong></span>
       <span class="mercedes-announcement-count"><b id="mercedesAnnouncementCount">0</b><small>из 50</small></span>
-      <span class="mercedes-announcement-action">Условия и призы <span aria-hidden="true">↗</span></span>
+      <span class="mercedes-announcement-action">Смотреть условия <span aria-hidden="true">↗</span></span>
     </a>
 
     <main id="top">
       <section class="menu-hero" aria-labelledby="hero-title">
-        <img class="menu-hero-photo" src="assets/hot/sushi-hotdog-salmon.jpg" alt="Суши-хот-дог EDEN с лососем" width="1280" height="632" fetchpriority="high" />
         <div class="menu-hero-copy">
-          <p class="eyebrow">EDENFOOD · Дубоссары</p>
-          <h1 id="hero-title">Твой вкус.<br /><span>Твой EDEN.</span></h1>
-          <p>Любимые роллы, сеты на компанию и новый стрит-формат. Выбирай по фото — заказывай в пару кликов.</p>
-          <a class="primary-action" href="#categories">Выбрать что-нибудь вкусное <span aria-hidden="true">↗</span></a>
+          <p class="eyebrow">EDENFOOD · ДУБОССАРЫ</p>
+          <h1 id="hero-title">Собирайся.<br /><span>Заказывай.</span></h1>
+          <p>Роллы и сеты, горячие закуски и напитки. Выбирай любимое в меню — мы примем заказ на месте, на самовывоз или доставку.</p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#menu">Открыть меню <span aria-hidden="true">↗</span></a>
+            <a class="hero-secondary-action" href="#newArrivals">Посмотреть новинки</a>
+          </div>
+          <div class="hero-benefits" aria-label="Варианты заказа">
+            <span>На месте</span><span>Самовывоз</span><span>Доставка</span>
+          </div>
         </div>
+        <img class="menu-hero-photo" src="assets/sets/mognu.png" alt="Сет МОГНУ — роллы на сером фоне" width="1600" height="1600" fetchpriority="high" />
         <a class="hero-street-link" href="#menu" data-select-category="street_rolls"><span>Попробуй новое</span><strong>Стрит-роллы в тубусе →</strong></a>
       </section>
 
       <section class="new-arrivals" id="newArrivals" aria-labelledby="newArrivalsTitle" hidden>
         <div class="new-arrivals-heading">
           <div>
-            <p class="eyebrow">Свежие идеи EDEN</p>
-            <h2 id="newArrivalsTitle">Новинки меню</h2>
-            <p class="new-arrivals-subtitle">Листайте новинки или добавьте понравившееся прямо отсюда.</p>
+            <p class="eyebrow">Свежее в меню</p>
+            <h2 id="newArrivalsTitle">Новинки EDEN</h2>
+            <p class="new-arrivals-subtitle">Новые блюда появляются здесь первыми. Листайте или сразу добавляйте в корзину.</p>
           </div>
           <div class="new-arrivals-controls" aria-label="Управление новинками">
             <button type="button" data-new-arrivals-previous aria-label="Предыдущая новинка">←</button>
@@ -69,9 +80,56 @@
         </div>
         <div class="new-arrivals-footer">
           <div class="new-arrivals-dots" id="newArrivalsDots" role="group" aria-label="Выбрать новинку"></div>
-          <span>Листайте влево и вправо</span>
+          <span>Автопоказ · листайте влево и вправо</span>
         </div>
         <p class="new-arrivals-status" id="newArrivalsStatus" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="category-showcase" id="categories" aria-labelledby="categories-title">
+        <div class="showcase-heading">
+          <div><p class="eyebrow">Выбирай по настроению</p><h2 id="categories-title">С чего начнём?</h2></div>
+          <a href="#menu" data-select-category="all">Все блюда <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="category-tiles" id="categoryTiles"></div>
+        <button class="more-categories" id="moreCategories" type="button" aria-expanded="false" aria-controls="categoryTiles">Показать все разделы ↓</button>
+      </section>
+
+      <section class="how-order" aria-labelledby="how-order-title">
+        <div>
+          <h2 id="how-order-title">Заказ — без лишних шагов</h2>
+          <p>После отправки официант подтвердит его и сообщит, если нужно уточнить детали.</p>
+        </div>
+        <div class="order-steps">
+          <div class="order-step"><b>01</b><span>Выберите блюда и добавьте их в корзину</span></div>
+          <div class="order-step"><b>02</b><span>Укажите контакты и как получить заказ</span></div>
+          <div class="order-step"><b>03</b><span>Отправьте — официант подтвердит заказ</span></div>
+        </div>
+      </section>
+
+      <section class="menu-shell" id="menu" aria-labelledby="menuTitle">
+        <div class="section-heading">
+          <div><p class="eyebrow">Меню EDEN</p><h2 id="menuTitle">Выберите своё любимое</h2></div>
+          <p>Ищите по названию или ингредиенту. Нажмите на фото блюда, чтобы посмотреть состав.</p>
+        </div>
+        <div class="menu-navigation">
+          <div class="menu-tools">
+            <label class="search-field">
+              <span>Найти в меню</span>
+              <input id="menuSearch" type="search" placeholder="Филадельфия, лосось, сет…" autocomplete="off" aria-describedby="menuSearchStatus" />
+            </label>
+            <button id="clearMenuSearch" class="clear-menu-search" type="button" hidden>Сбросить ×</button>
+          </div>
+          <p id="menuSearchStatus" class="menu-search-status" role="status" aria-live="polite"></p>
+          <div class="category-rail-heading">
+            <div><strong>Раздел меню</strong><small>Листайте, чтобы увидеть всё</small></div>
+            <div class="category-arrows" aria-label="Прокрутка разделов">
+              <button id="categoriesPrevious" type="button" aria-label="Предыдущие разделы">←</button>
+              <button id="categoriesNext" type="button" aria-label="Следующие разделы">→</button>
+            </div>
+          </div>
+          <div class="filters" id="filters" aria-label="Фильтр категорий"></div>
+        </div>
+        <div class="menu-grid" id="menuGrid"></div>
       </section>
 
       <section class="mercedes-campaign" id="mercedes-raffle" aria-labelledby="mercedes-title">
@@ -135,45 +193,10 @@
         <p class="mercedes-campaign-footnote">Участвует только оплаченный сет «МЕРСЕДЕС». Один набор даёт один номер; количество ограничено 50 номерами. Условия участия за пределами Молдовы согласовываются при оформлении заказа.</p>
       </section>
 
-      <section class="category-showcase" id="categories" aria-labelledby="categories-title">
-        <div class="showcase-heading"><div><p class="eyebrow">Меню EDEN</p><h2 id="categories-title">Что сегодня хочется?</h2></div><a href="#menu" data-select-category="all">Всё меню <span aria-hidden="true">↗</span></a></div>
-        <div class="category-tiles" id="categoryTiles"></div>
-        <button class="more-categories" id="moreCategories" type="button" aria-expanded="false" aria-controls="categoryTiles">Показать все разделы ↓</button>
-      </section>
-
-      <section class="menu-shell" id="menu">
-        <div class="section-heading">
-          <p class="eyebrow">Меню</p>
-          <h2 id="menuTitle">Выберите своё любимое</h2>
-        </div>
-        <div class="menu-navigation">
-          <div class="menu-tools">
-            <label class="search-field">
-              <span>Поиск по меню</span>
-              <input id="menuSearch" type="search" placeholder="Например: фила, лосось, мини-ролл" autocomplete="off" aria-describedby="menuSearchStatus" />
-            </label>
-            <button id="clearMenuSearch" class="clear-menu-search" type="button" hidden>Сбросить поиск ×</button>
-          </div>
-          <p id="menuSearchStatus" class="menu-search-status" role="status" aria-live="polite"></p>
-          <div class="category-rail-heading">
-            <div>
-              <strong>Выберите раздел</strong>
-              <small>Листайте категории влево и вправо</small>
-            </div>
-            <div class="category-arrows" aria-label="Прокрутка разделов">
-              <button id="categoriesPrevious" type="button" aria-label="Предыдущие разделы">←</button>
-              <button id="categoriesNext" type="button" aria-label="Следующие разделы">→</button>
-            </div>
-          </div>
-          <div class="filters" id="filters" aria-label="Фильтр категорий"></div>
-        </div>
-        <div class="menu-grid" id="menuGrid"></div>
-      </section>
-
       <section class="contact-strip" id="contacts" aria-label="Контакты EDEN">
-        <div><span>Ждём в гости</span><strong>Горького, 22</strong><small>Дубоссары · Вавилон, 3 этаж</small></div>
-        <div><span>Время для вкусного</span><strong>11:00 — 23:00</strong><small>Понедельник — выходной</small></div>
-        <div><span>Заказ по телефону</span><a href="tel:+37368299125">+373 68 299 125</a><small>Доставка · самовывоз · в зале</small></div>
+        <div><span>Ждём в гости</span><strong>Улица Горького, 22</strong><small>Дубоссары · «Вавилон», 3 этаж</small></div>
+        <div><span>Режим работы</span><strong>11:00 — 23:00</strong><small>Понедельник — выходной</small></div>
+        <div><span>Связаться и заказать</span><a href="tel:+37368299125">+373 68 299 125</a><small>Позвоните нам или выберите доставку в корзине</small></div>
       </section>
     </main>
 
