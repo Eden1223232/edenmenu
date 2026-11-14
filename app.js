@@ -1,4 +1,6 @@
 const menuGrid = document.querySelector("#menuGrid");
+const currentShiftSection = document.querySelector("#currentShiftSection");
+const currentShiftGrid = document.querySelector("#currentShiftGrid");
 const newArrivalsSection = document.querySelector("#newArrivals");
 const newArrivalsTrack = document.querySelector("#newArrivalsTrack");
 const newArrivalsDots = document.querySelector("#newArrivalsDots");
@@ -70,6 +72,56 @@ const fetchWithTimeout = async (url, options = {}, timeoutMs = 8000) => {
     window.clearTimeout(timeout);
   }
 };
+
+let currentShiftSignature = "";
+async function refreshCurrentShifts() {
+  if (!currentShiftSection || !currentShiftGrid) return;
+  try {
+    const response = await fetchWithTimeout(
+      `${apiBase}/api/public-shifts`,
+      { method: "GET", cache: "no-store", credentials: "omit", headers: { Accept: "application/json" } },
+      5000,
+    );
+    if (!response.ok) return;
+    const payload = await response.json();
+    const shifts = Array.isArray(payload?.shifts) ? payload.shifts : [];
+    const signature = JSON.stringify(shifts);
+    if (signature === currentShiftSignature) return;
+    currentShiftSignature = signature;
+    if (!shifts.length) {
+      currentShiftGrid.replaceChildren();
+      currentShiftSection.hidden = true;
+      return;
+    }
+
+    currentShiftGrid.innerHTML = shifts.map((shift) => {
+      const name = String(shift?.name || "Команда EDEN");
+      const title = String(shift?.title || "Команда EDEN");
+      const photoUrl = /^https:\/\/edenfood\.xyz\/assets\/team\/(?:victor|anya)-shift\.webp$/.test(String(shift?.photoUrl || ""))
+        ? shift.photoUrl
+        : "";
+      const initial = Array.from(name.trim())[0] || "E";
+      return `<article class="shift-person">
+        <div class="shift-person-photo">
+          <span class="shift-person-initial" ${photoUrl ? "hidden" : ""} aria-hidden="true">${escapeHtml(initial)}</span>
+          ${photoUrl ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async">` : ""}
+          <span class="shift-person-live-dot" aria-label="На смене" title="Сейчас на смене"></span>
+        </div>
+        <div class="shift-person-copy"><small>СЕЙЧАС НА СМЕНЕ</small><strong>${escapeHtml(name)}</strong><span>${escapeHtml(title)}</span></div>
+      </article>`;
+    }).join("");
+    currentShiftGrid.querySelectorAll(".shift-person-photo img").forEach((image) => {
+      image.addEventListener("error", () => {
+        image.remove();
+        const fallback = image.parentElement?.querySelector(".shift-person-initial");
+        if (fallback) fallback.hidden = false;
+      }, { once: true });
+    });
+    currentShiftSection.hidden = false;
+  } catch {
+    // Keep the last known shift display during a temporary network interruption.
+  }
+}
 
 const normalizedName = (value) =>
   String(value || "")
@@ -1063,6 +1115,13 @@ void refreshMercedesRaffle();
 window.setInterval(() => {
   if (!document.hidden) void refreshMercedesRaffle();
 }, 15000);
+void refreshCurrentShifts();
+window.setInterval(() => {
+  if (!document.hidden) void refreshCurrentShifts();
+}, 15000);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) void refreshCurrentShifts();
+});
 document.querySelector('#mercedesOrderButton')?.addEventListener('click', () => {
   const item = catalogById.get('edenfood-seti-016');
   if (!item?.available) {
