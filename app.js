@@ -460,6 +460,31 @@ function renderMenu() {
   }
 }
 
+async function renderEmployees() {
+  const container = document.querySelector('#teamGrid');
+  if (!container) return;
+  let employees = window.EDEN_EMPLOYEES || [];
+  try {
+    const response = await fetchWithTimeout(`${apiBase}/api/public-employees`);
+    if (response.ok) {
+      const payload = await response.json();
+      if (Array.isArray(payload.employees) && payload.employees.length)
+        employees = payload.employees.map((employee) => ({
+          ...employee,
+          photoUrl: employee.photoUrl || (employee.name?.toLowerCase() === 'arina' ? 'assets/employees/arina.jpg' : ''),
+        }));
+    }
+  } catch {
+    /* The bundled Arina photo remains as a fallback while the admin API is unavailable. */
+  }
+  container.innerHTML = employees.map((employee) => `
+    <article class="team-card">
+      <img src="${escapeHtml(employee.photoUrl || employee.photo || '')}" alt="${escapeHtml(employee.name)}" loading="lazy">
+      <div><h3>${escapeHtml(employee.name)}</h3><p>${escapeHtml(employee.role || 'Команда EdenFood')}</p></div>
+    </article>
+  `).join('');
+}
+
 function updateCartIndicators() {
   const summary = cartSummary();
   cartCountElements.forEach((element) => {
@@ -1068,6 +1093,7 @@ async function syncCatalog() {
 renderFilters();
 renderCategoryTiles();
 renderMenu();
+void renderEmployees();
 renderNewArrivals();
 renderCart();
 updateDeliveryFields();
