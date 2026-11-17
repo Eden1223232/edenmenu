@@ -463,7 +463,9 @@ function renderMenu() {
 async function renderEmployees() {
   const container = document.querySelector('#teamGrid');
   if (!container) return;
-  let employees = window.EDEN_EMPLOYEES || [];
+  let employees = Array.isArray(window.EDEN_EMPLOYEES) && window.EDEN_EMPLOYEES.length
+    ? window.EDEN_EMPLOYEES
+    : [{ name: 'Arina', role: 'Команда EdenFood', photoUrl: 'assets/employees/arina.jpg' }];
   try {
     const response = await fetchWithTimeout(`${apiBase}/api/public-employees`);
     if (response.ok) {
