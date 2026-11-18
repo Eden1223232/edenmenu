@@ -1354,7 +1354,7 @@ void loadCustomerAccount();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-              .register("/sw.js?v=night-market-20261114-v1", { updateViaCache: "none" })
+              .register("/sw.js?v=staff-photos-20261118-v1", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */
