@@ -61,13 +61,6 @@ body { background: #090909; }
 .add-to-cart { border-radius: 11px; }
 .product-enquiry { display:flex; align-items:center; justify-content:center; min-height:48px; background:#85232a; color:#fff; border-radius:11px; padding:10px 16px; font-size:13px; font-weight:700; }
 .contact-strip { margin: 0 auto 40px; padding: 25px clamp(16px,4vw,60px); display:grid; grid-template-columns:repeat(3,1fr); gap:22px; border-block:1px solid #ffffff15; scroll-margin-top:100px; }
-.team-shell { max-width: 1720px; margin: 0 auto 56px; padding: 0 clamp(16px,4vw,60px); }
-.team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,280px)); gap:20px; }
-.team-card { overflow:hidden; border:1px solid #ffffff18; border-radius:20px; background:#151515; }
-.team-card img { display:block; width:100%; aspect-ratio:1; object-fit:cover; object-position:center 28%; }
-.team-card div { padding:16px 18px 18px; }
-.team-card h3 { margin:0 0 5px; font-size:22px; }
-.team-card p { margin:0; color:var(--muted); }
 .contact-strip span,.contact-strip small { display:block; color:var(--muted); font-size:12px; line-height:1.6; }
 .contact-strip strong,.contact-strip a { display:block; font-size:24px; font-weight:800; margin:7px 0; }
 .floating-cart:not(.has-items) { display:none; }

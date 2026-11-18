@@ -97,8 +97,9 @@ async function refreshCurrentShifts() {
     currentShiftGrid.innerHTML = shifts.map((shift) => {
       const name = String(shift?.name || "Команда EDEN");
       const title = String(shift?.title || "Команда EDEN");
-      const photoUrl = /^https:\/\/edenfood\.xyz\/assets\/team\/(?:victor|anya)-shift\.webp$/.test(String(shift?.photoUrl || ""))
-        ? shift.photoUrl
+      const photoCandidate = String(shift?.photoUrl || "");
+      const photoUrl = /^data:image\/(?:png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/i.test(photoCandidate)
+        ? photoCandidate
         : "";
       const initial = Array.from(name.trim())[0] || "E";
       return `<button class="shift-person" type="button" aria-label="Порадовать анимацией: ${escapeHtml(name)}, ${escapeHtml(title)}" aria-pressed="false">
@@ -458,33 +459,6 @@ function renderMenu() {
     empty.textContent = "По этому запросу ничего не найдено.";
     menuGrid.append(empty);
   }
-}
-
-async function renderEmployees() {
-  const container = document.querySelector('#teamGrid');
-  if (!container) return;
-  let employees = Array.isArray(window.EDEN_EMPLOYEES) && window.EDEN_EMPLOYEES.length
-    ? window.EDEN_EMPLOYEES
-    : [{ name: 'Arina', role: 'Команда EdenFood', photoUrl: 'assets/employees/arina.jpg' }];
-  try {
-    const response = await fetchWithTimeout(`${apiBase}/api/public-employees`);
-    if (response.ok) {
-      const payload = await response.json();
-      if (Array.isArray(payload.employees) && payload.employees.length)
-        employees = payload.employees.map((employee) => ({
-          ...employee,
-          photoUrl: employee.photoUrl || (employee.name?.toLowerCase() === 'arina' ? 'assets/employees/arina.jpg' : ''),
-        }));
-    }
-  } catch {
-    /* The bundled Arina photo remains as a fallback while the admin API is unavailable. */
-  }
-  container.innerHTML = employees.map((employee) => `
-    <article class="team-card">
-      <img src="${escapeHtml(employee.photoUrl || employee.photo || '')}" alt="${escapeHtml(employee.name)}" loading="lazy">
-      <div><h3>${escapeHtml(employee.name)}</h3><p>${escapeHtml(employee.role || 'Команда EdenFood')}</p></div>
-    </article>
-  `).join('');
 }
 
 function updateCartIndicators() {
@@ -1095,7 +1069,6 @@ async function syncCatalog() {
 renderFilters();
 renderCategoryTiles();
 renderMenu();
-void renderEmployees();
 renderNewArrivals();
 renderCart();
 updateDeliveryFields();
@@ -1381,7 +1354,7 @@ void loadCustomerAccount();
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-              .register("/sw.js?v=night-market-20261114-v1", { updateViaCache: "none" })
+              .register("/sw.js?v=staff-photos-20261118-v1", { updateViaCache: "none" })
       .then((registration) => registration.update())
       .catch(() => {
         /* Ordering remains available online when offline caching is unsupported. */

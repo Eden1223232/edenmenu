@@ -1,10 +1,10 @@
 const CACHE_PREFIX = "edenfood-site";
-const SHELL_CACHE = "edenfood-site-shell-shift-bottom-20261114-v2";
+const SHELL_CACHE = "edenfood-site-shell-staff-photos-20261118-v1";
 const SHELL_URLS = [
   "/",
   "/index.html",
   "/styles.css?v=raffle-closed-20261110",
-  "/storefront.css?v=raffle-closed-20261110",
+  "/storefront.css?v=shift-photo-20261118",
   "/mercedes-campaign.css?v=mercedes-20261111-v1",
   "/menu-search.css?v=street-199-search-20261005",
   "/eden-refresh.css?v=crew-shift-dance-20261114-v1",
@@ -12,7 +12,7 @@ const SHELL_URLS = [
   "/extra-menu-data.js?v=tom-yam-price-130-20261108-v1",
   "/street-menu-data.js?v=menu-prices-20261031-v1",
   "/menu-search.js?v=street-199-search-20261005",
-  "/app.js?v=crew-shift-dance-20261114-v1",
+  "/app.js?v=shift-profile-photo-20261118",
   "/assets/logo-eden.webp",
   "/assets/items/nori-100-gray.png",
   "/assets/snacks/fries.webp",
